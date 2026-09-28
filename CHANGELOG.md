@@ -12,5 +12,5 @@
 
 ### Changed
 
-* README の見出しを `S2J Post Dates Service` に変更
+* README の見出しを `S2J Inquiry Destination Service` に変更
 * `.gitignore` を Composer、Node、テスト成果物向けに拡張
