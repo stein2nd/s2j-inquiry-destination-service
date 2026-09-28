@@ -2,6 +2,17 @@
 
 ## unreleased
 
+## 0.0.1 - 2026-09-29
+
+### Added
+
+* 確定前の設計メモを `docs_mod/` に追加 (概要、コンセプト、設計原則、アーキテクチャー、サービス仕様、実装タスク、実装状況、テスト仕様、テスト結果)
+* `docs_mod/specs.md` から `service_spec.md` への参照を追加
+
+### Changed
+
+* `.textlintrc.json` の allowlist に、サービス名と `PHPMailer`、`wp_mail` などを追加
+
 ## 0.0.1 - 2026-09-28
 
 ### Added
