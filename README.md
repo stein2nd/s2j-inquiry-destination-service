@@ -1,2 +1,1 @@
-# s2j-inquiry-destination-service
-s2j-inquiry-destination-service
+# S2J Inquiry Destination Service

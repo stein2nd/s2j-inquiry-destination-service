@@ -1,0 +1,30 @@
+{
+  "name": "s2j-inquiry-destination-service",
+  "version": "0.0.1",
+  "description": "Inquiry SaaS Adapter (WP-Independent)",
+  "license": "GPL-3.0-or-later",
+  "author": "Koutarou ISHIKAWA <stein2nd@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stein2nd/s2j-inquiry-destination-service.git"
+  },
+  "homepage": "https://github.com/stein2nd/s2j-inquiry-destination-service#readme",
+  "bugs": {
+    "url": "https://github.com/stein2nd/s2j-inquiry-destination-service/issues"
+  },
+  "keywords": [],
+  "workspaces": [],
+  "directories": {},
+  "files": [],
+  "main": "",
+  "scripts": {
+    "lint:docs": "s2j-docs-linter ./README.md ./CHANGELOG.md ./docs/**/*.md ./docs_mod/**/*.md"
+  },
+  "devDependencies": {
+    "@s2j/docs-linter": "^1.0.25"
+  },
+  "allowScripts": {
+    "@s2j/docs-linter": true,
+    "esbuild": true
+  }
+}
