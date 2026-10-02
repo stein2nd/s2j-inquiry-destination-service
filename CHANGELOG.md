@@ -2,6 +2,14 @@
 
 ## unreleased
 
+## 0.0.1 - 2026-10-03
+
+### Changed
+
+* `@s2j/docs-linter` を ^1.0.26に更新
+* `composer.lock` の `phpunit/phpunit` を v13.4.0に更新
+* `.vscode/settings.json` の `npm.enableScriptExplorer` を `json.schemaDownload.enable` に変更
+
 ## 0.0.1 - 2026-10-01
 
 ### Changed
