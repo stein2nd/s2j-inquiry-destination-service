@@ -2,6 +2,14 @@
 
 ## unreleased
 
+## 0.0.1 - 2026-10-04
+
+### Changed
+
+* `docs_mod/service_spec.md` で、呼び出し側プラグインを [s2j-inquiry-destination](https://github.com/stein2nd/s2j-inquiry-destination) に確定し、仕様ドラフトへの参照を追加した
+    * フォームは Snow Monkey Forms。対応付けたフォームの管理者宛メールは、このプラグインが送る
+* `@s2j/docs-linter` を ^1.0.27に更新
+
 ## 0.0.1 - 2026-10-03
 
 ### Changed

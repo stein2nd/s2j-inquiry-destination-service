@@ -114,6 +114,8 @@ API キーはライブラリに埋め込みません。プラグインがオプ�
 
 ## プラグインの責務 (境界。詳細はプラグイン仕様)
 
+プラグイン仕様の詳細は [S2J Inquiry Destination の docs_mod/specs.md](https://github.com/stein2nd/s2j-inquiry-destination/blob/main/docs_mod/specs.md) です。
+
 * Snow Monkey Forms の送信を、統一ペイロードに翻訳する。フォーム ID から種別を引き、解決済みの種別だけをライブラリに渡す。
 * 管理画面で、フォーム ID と種別の対応、タイプごとの送信先 (いまはメール、将来は SaaS)、エンドポイント、API キーを保存する。宛先が空のタイプを見せる。
 * Mail 時は `wp_mail` (内部の PHPMailer) を実行する。SaaS 時は HTTP を実行する。
@@ -148,7 +150,7 @@ ID が変わるのは、エクスポート / インポートで投稿を作り�
 | 名称 | 種別 | 役割 |
 | --- | --- | --- |
 | **本ライブラリ** | Composer | 統一ペイロード、送信先ポート、Mail / 将来 SaaS のリクエスト組立 |
-| **S2J Inquiry Destination** (仮) | WP プラグイン | 設定画面、秘密情報、SMF フック、`wp_mail` / HTTP の実行 |
+| [S2J Inquiry Destination](https://github.com/stein2nd/s2j-inquiry-destination) | WP プラグイン | 設定画面、秘密情報、SMF フック、`wp_mail` / HTTP の実行 |
 | [kis-wordpress](https://github.com/stein2nd/kis-wordpress.git) / kis-inquiry | モノレポ内プラグイン | KIS の問い合わせページ。送信先ロジックは抱え込まない |
 | [kis2026_base](https://github.com/stein2nd/kis2026_base.git) | テーマ | 見た目。フォームの正は SMF + プラグイン + 本ライブラリ |
 
@@ -178,3 +180,4 @@ ID が変わるのは、エクスポート / インポートで投稿を作り�
 | 2026-10-01 | アダプタは本ライブラリに同梱し、種類ごとの関数とする。今実装するのは Mail だけ、と決定 |
 | 2026-10-01 | 再送キューは持たない。成功までフォームを閉じない。SaaS はチケット ID、メールは `wp_mail` の受け付けを成功とする、と決定 |
 | 2026-10-01 | 種別と SMF フォーム ID の対応はプラグインに保存する。データベースごと移せば ID も戻る、と決定 |
+| 2026-10-04 | 呼び出し側プラグイン [s2j-inquiry-destination](https://github.com/stein2nd/s2j-inquiry-destination) の仕様ドラフトを当該 repo に書いた。フォームは Snow Monkey Forms。対応付けたフォームの管理者宛メールは、このプラグインが送る |
