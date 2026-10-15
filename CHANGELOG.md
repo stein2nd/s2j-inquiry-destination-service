@@ -2,6 +2,14 @@
 
 ## unreleased
 
+## 0.0.1 - 2026-10-15
+
+### Changed
+
+* `@s2j/docs-linter` を ^1.0.29に更新
+* `composer.lock` の `phpstan/phpstan` を v2.3.1、`phpunit/phpunit` を v13.4.2に更新
+* `.textlintrc.json` の allowlist に `#status-` 付きアンカー ID を追加した
+
 ## 0.0.1 - 2026-10-09
 
 ### Changed
