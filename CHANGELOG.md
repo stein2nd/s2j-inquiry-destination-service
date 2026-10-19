@@ -2,6 +2,20 @@
 
 ## unreleased
 
+## 0.0.1 - 2026-10-19
+
+### Added
+
+* 確定仕様を `docs/` に置いた (索引 `docs/specs.md`、`core/`、`contracts/`、`interfaces/`、`engineering/`、`governance/`)
+* `docs/archive/README.md` を追加 (完了イニシアチブの凍結スナップショット用)
+
+### Changed
+
+* `docs_mod/` の仕様 Markdown を `docs/` に移行し、`docs_mod/README.md` のみ残して改訂起草場とした
+* 仕様を横断レビューし、正規フロー、`kind` 命名、PHP SoT、契約 canonical 形などを `docs/` 内で統一した
+* `composer.json` の PHP 要件を `^8.1` に更新
+* README から `docs/specs.md` と `docs_mod/README.md` にリンクした
+
 ## 0.0.1 - 2026-10-15
 
 ### Changed
