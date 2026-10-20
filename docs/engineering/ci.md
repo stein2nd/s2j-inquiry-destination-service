@@ -13,7 +13,7 @@ Webinar Survey Service / Webinar Service と同型の **php-quality** ゲート�
 
 ## ワークフロー (起草)
 
-* `.github/workflows/php-quality.yml` — push / PR で `composer install` → test / phpstan / phpcs
+* `.github/workflows/php-quality.yml` — push / PR、PHP **8.3** で `composer install` → `scripts/verify/all.sh`
 * `.github/workflows/docs-lint.yml` — `docs/**` と `docs_mod/**` (起草 README 含む)
 
 ## 非目標

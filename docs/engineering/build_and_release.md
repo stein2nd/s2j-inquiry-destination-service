@@ -11,7 +11,7 @@
 | 区分 | 要件 | 備考 |
 | --- | --- | --- |
 | ライブラリ declare 下限 | `^8.1` | ルート `composer.json` の `require.php` と **同時** に更新する |
-| 本 repo 開発 / CI | PHP 8.1以上推奨 | PHPUnit 等 dev 依存はより新しい PHP を要求することがある |
+| 本 repo 開発 / CI | PHP v8.1以上推奨 (Actions は v8.3) | dev 依存は `composer.lock` に従う (PHPUnit v10系) |
 
 他ドキュメント (`architecture.md`、`php_api_spec.md` 等) は本表を参照し、独自の PHP 版数を書かない。
 

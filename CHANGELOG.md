@@ -19,6 +19,10 @@
 * README にインストール・開発コマンド (`npm run quality:php`) を追記
 * `.gitattributes` に `docs_mod` を `export-ignore` した
 
+### Fixed
+
+* `php-quality` CI: `phpunit/phpunit` を ^10.5に合わせ、`composer.lock` を PHP v8.3 (Actions) と整合させた
+
 ## 0.0.1 - 2026-10-19
 
 ### Added
