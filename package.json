@@ -1,6 +1,6 @@
 {
     "name": "s2j-inquiry-destination-service",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "Inquiry SaaS Adapter (WP-Independent)",
     "license": "GPL-3.0-or-later",
     "author": "Koutarou ISHIKAWA <stein2nd@gmail.com>",
@@ -24,7 +24,10 @@
         "phpcs": "composer phpcs",
         "pretest:unit:php:local": "composer install --no-interaction --prefer-dist",
         "test:unit:php:local": "composer test",
-        "pretest:lint:php": "composer install --no-interaction --prefer-dist"
+        "pretest:lint:php": "composer install --no-interaction --prefer-dist",
+        "validate:composer": "composer validate-composer",
+        "verify:dist": "composer verify-dist",
+        "quality:php": "bash scripts/verify/all.sh"
     },
     "devDependencies": {
         "@s2j/docs-linter": "^1.0.29"

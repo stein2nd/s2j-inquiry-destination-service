@@ -17,6 +17,14 @@
     "autoload": {
         "psr-4": {
             "S2J\\InquiryDestinationService\\": "src/"
+        },
+        "files": [
+            "src/functions.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "S2J\\InquiryDestinationService\\Tests\\": "tests/"
         }
     },
     "require": {
@@ -35,6 +43,7 @@
             "/wordpress",
             "/tests",
             "/docs",
+            "/docs_mod",
             "/docs_old",
             "/.github",
             "/.vscode",
@@ -69,6 +78,11 @@
         "lint:php": [
             "@phpstan",
             "@phpcs"
-        ]
+        ],
+        "validate-composer": "composer validate --strict",
+        "verify-dist": "bash scripts/verify-composer-dist.sh"
+    },
+    "config": {
+        "sort-packages": true
     }
 }

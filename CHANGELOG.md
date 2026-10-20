@@ -2,6 +2,23 @@
 
 ## unreleased
 
+## 0.1.0 - 2026-10-20
+
+### Added
+
+* 初版 Core と公開4関数 (`normalize_inquiry_payload`、`validate_inquiry_dispatch`、`build_dispatch_material`、`map_dispatch_result`)
+* Mail アダプタ (件名、本文、`text/plain` 材料) と結果写像 (`mail_rejected`、`correlation_id` エコー)
+* PHPUnit 必須分岐 + 契約スナップショット (`tests/Unit/`、`tests/Fixtures/contracts/mail_sales_body.txt`)
+* GitHub Actions `php-quality` と `scripts/verify/all.sh` (validate / dist / PHPUnit / PHPStan / PHPCS)
+* `composer validate-composer` / `composer verify-dist` (`scripts/verify-composer-dist.sh`)
+* `docs/status.md` の機能一覧と非 HTTPS 完了条件チェックリスト
+
+### Changed
+
+* `composer.json` に `autoload.files`、dev 向け PSR-4、`archive` から `docs_mod` を除外
+* README にインストール・開発コマンド (`npm run quality:php`) を追記
+* `.gitattributes` に `docs_mod` を `export-ignore` した
+
 ## 0.0.1 - 2026-10-19
 
 ### Added
