@@ -26,7 +26,7 @@
 | Mail アダプタ | 実装済み | 100 | [§ Mail](#status-mail) (5/5) |
 | 結果写像 | 実装済み | 100 | [§ 結果写像](#status-result) (4/4) |
 | PHPUnit / PHPStan / PHPCS | 実装済み | 100 | [§ 品質ゲート](#status-quality) (8/8) |
-| Packagist 公開 | 未 | 40 | [§ Packagist](#status-packagist) (2/5) |
+| Packagist 公開 | 実装済み | 100 | [§ Packagist](#status-packagist) (5/5) |
 | プラグインからの require | 未 | 0 | [§ プラグイン (HTTPS)](#status-plugin-https) (0/9) |
 
 ## 100% 完了条件チェックリスト
@@ -119,9 +119,9 @@
 
 正本: [build_and_release.md](./engineering/build_and_release.md)
 
-* [ ] Packagist: `s2j/inquiry-destination-service` を submit
-* [ ] Packagist: auto-update 確認
-* [ ] SemVer: CHANGELOG 節 + 初回タグ `v0.1.0` (または方針どおりの minor)
+* [x] Packagist: [s2j/inquiry-destination-service](https://packagist.org/packages/s2j/inquiry-destination-service) 登録済み (`dev-main`)
+* [x] Packagist: auto-update — `This package is auto-updated.` を確認 (2026-10-20)
+* [x] SemVer: CHANGELOG `0.1.0` 節 + タグ `v0.1.0` ([Packagist v0.1.0](https://packagist.org/packages/s2j/inquiry-destination-service#v0.1.0))
 * [x] `composer validate-composer` / `composer verify-dist` (.gitattributes / `scripts/verify-composer-dist.sh`)
 * [x] README — `composer require` / PHP v8.1以上 ([README.md](../README.md))
 
