@@ -25,6 +25,7 @@ WordPress も `wp_mail` も SaaS API も使わずに、正規化、検証、Mail
 ## 必須カバレッジ (初版)
 
 * 各 **deficiency コード** について真になる入力を1件以上
+* プラグイン定義 slug (`support` 等) が `inquiry_type_invalid` にならない代表1件
 * 複数不足の **安定順**
 * `destination_inquiry_type_mismatch`
 * `destination_empty` (`mail_to` 空、または不正形式のみで有効アドレス0件)

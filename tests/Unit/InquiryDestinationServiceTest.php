@@ -68,7 +68,7 @@ final class InquiryDestinationServiceTest extends TestCase
     {
         $result = validate_inquiry_dispatch(
             [
-                'inquiry_type' => 'unknown',
+                'inquiry_type' => '',
                 'name' => '',
                 'email' => 'bad',
                 'message' => '',
@@ -138,7 +138,7 @@ final class InquiryDestinationServiceTest extends TestCase
 
         $built = build_dispatch_material($validated['payload'], $validated['destination']);
         self::assertSame(['hr@example.com'], $built['material']['to']);
-        self::assertSame('[recruit] Recruit inquiry', $built['material']['subject']);
+        self::assertSame('[recruit] recruit', $built['material']['subject']);
     }
 
     public function testBuildUsesSubjectFallbackWhenSubjectHintEmpty(): void
@@ -149,7 +149,35 @@ final class InquiryDestinationServiceTest extends TestCase
         $validated = validate_inquiry_dispatch($payload, $this->validDestination());
         $built = build_dispatch_material($validated['payload'], $validated['destination']);
 
-        self::assertSame('[sales] Sales inquiry', $built['material']['subject']);
+        self::assertSame('[sales] sales', $built['material']['subject']);
+    }
+
+    public function testCustomInquiryTypeSlugIsAccepted(): void
+    {
+        $payload = [
+            'inquiry_type' => 'product_feedback',
+            'name' => 'Sam',
+            'email' => 'sam@example.com',
+            'phone' => '',
+            'message' => 'Feedback',
+            'subject_hint' => 'Product feedback',
+            'locale' => 'ja',
+            'meta' => [],
+        ];
+        $destination = [
+            'kind' => 'mail',
+            'inquiry_type' => 'product_feedback',
+            'mail_to' => ['feedback@example.com'],
+            'saas_endpoint' => '',
+            'saas_project_id' => '',
+            'credentials' => [],
+        ];
+
+        $validated = validate_inquiry_dispatch($payload, $destination);
+        self::assertSame([], $validated['deficiencies']);
+
+        $built = build_dispatch_material($validated['payload'], $validated['destination']);
+        self::assertSame('[product_feedback] Product feedback', $built['material']['subject']);
     }
 
     public function testDestinationEmptyWhenMailToHasOnlyInvalidAddresses(): void
@@ -243,9 +271,14 @@ final class InquiryDestinationServiceTest extends TestCase
         ];
 
         return [
-            'inquiry_type_invalid' => [
-                array_merge($basePayload, ['inquiry_type' => 'event']),
-                array_merge($baseDestination, ['inquiry_type' => 'event']),
+            'inquiry_type_invalid_empty' => [
+                array_merge($basePayload, ['inquiry_type' => '']),
+                array_merge($baseDestination, ['inquiry_type' => '']),
+                'inquiry_type_invalid',
+            ],
+            'inquiry_type_invalid_format' => [
+                array_merge($basePayload, ['inquiry_type' => 'BadSlug']),
+                array_merge($baseDestination, ['inquiry_type' => 'BadSlug']),
                 'inquiry_type_invalid',
             ],
             'name_empty' => [

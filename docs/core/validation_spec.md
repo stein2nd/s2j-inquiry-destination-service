@@ -10,6 +10,7 @@
 ## 非責務
 
 * プラグイン UI のエラーメッセージ (i18n はプラグイン)。
+* 種別 slug がサイト設定に存在するか (プラグインが保存時・送信前に担保)。
 
 ## 検証の流れ
 
@@ -24,7 +25,7 @@
 
 | コード | 条件 |
 | --- | --- |
-| `inquiry_type_invalid` | 未知の `inquiry_type` |
+| `inquiry_type_invalid` | `inquiry_type` が空、または [payload_spec.md](./payload_spec.md) の slug 形式非準拠 |
 | `name_empty` | `name` が空 |
 | `email_empty` | `email` が空 |
 | `email_invalid` | `email` が簡易 RFC 非準拠 (実装は filter_var 等) |

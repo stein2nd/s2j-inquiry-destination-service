@@ -6,29 +6,17 @@ namespace S2J\InquiryDestinationService\Core;
 
 final class InquiryTypes
 {
-    public const SALES = 'sales';
-
-    public const RECRUIT = 'recruit';
-
     /**
-     * @return list<string>
+     * 小文字英字始まり。英数字と `_` のみ。最大64文字 (正規表現上 1 + 0–63)。
      */
-    public static function all(): array
-    {
-        return [self::SALES, self::RECRUIT];
-    }
+    public const SLUG_PATTERN = '/^[a-z][a-z0-9_]{0,63}$/';
 
-    public static function isValid(string $inquiryType): bool
+    public static function isValidSlug(string $inquiryType): bool
     {
-        return in_array($inquiryType, self::all(), true);
-    }
+        if ($inquiryType === '') {
+            return false;
+        }
 
-    public static function subjectFallbackLabel(string $inquiryType): string
-    {
-        return match ($inquiryType) {
-            self::SALES => 'Sales inquiry',
-            self::RECRUIT => 'Recruit inquiry',
-            default => $inquiryType,
-        };
+        return preg_match(self::SLUG_PATTERN, $inquiryType) === 1;
     }
 }

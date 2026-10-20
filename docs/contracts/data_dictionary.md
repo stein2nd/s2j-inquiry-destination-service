@@ -2,21 +2,30 @@
 
 ## inquiry_type
 
-追加は **minor** (SemVer) とします。
+**種別カタログ (増減・表示名・宛先) の正本は S2J Inquiry Destination プラグイン** です。本ライブラリは slug **形式** のみ検証します ([payload_spec.md](../core/payload_spec.md))。
 
-削除・意味変更は **major** とします。
+| 項目 | 説明 |
+| --- | --- |
+| 値 | 小文字 slug (例: `sales`, `recruit`, `support`) |
+| 追加・削除 | プラグイン管理画面 (本 Service の minor リリース不要) |
+| 意味・ラベル | プラグイン。件名は `subject_hint` に載せる |
 
-| 値 | 意味 |
+### よく使う例 (プラグイン初期データ)
+
+| 値 | 意味 (参考) |
 | --- | --- |
 | `sales` | 営業問い合わせ |
 | `recruit` | 採用問い合わせ |
 
-### 拡張手順
+### プラグイン側の拡張手順
 
-1. 本表に値と意味を追記する (minor)。
-2. [payload_spec.md](../core/payload_spec.md) の列挙定数 (実装) を更新する。
-3. [testing_spec.md](../testing_spec.md) に `inquiry_type_invalid` 以外の代表入力を1件足す。
-4. プラグイン側のフォーム ID 対応 UI を更新する (別 repo)。
+1. 管理画面で slug ・表示名・`mail_to` を登録する。
+2. フォーム ID (等) を slug に割り当てる。
+3. 送信時に `subject_hint` に表示名 (i18n) を渡す。
+
+### Service 側 (slug 形式変更時)
+
+slug 規則そのものを変える場合は **major** (SemVer)。個別 slug の追加は Service 変更なし。
 
 ## destination.kind
 
@@ -55,7 +64,7 @@
 | 用語 | 説明 |
 | --- | --- |
 | 統一ペイロード | SMF 送信をプラグインが翻訳した後の、本ライブラリ入力 |
-| 種別 (`inquiry_type`) | フォーム種別 (営業 / 採用)。本文では **種別** と `inquiry_type` に統一する |
+| 種別 (`inquiry_type`) | フォーム種別 slug。本文では **種別** と `inquiry_type` に統一する |
 | 材料 (material) | `wp_mail` 引数または HTTP リクエストの中身 |
 | 送信ポート | 渡された宛先の `kind` からアダプタ関数を選ぶ層 (タイプ解決はプラグイン) |
 

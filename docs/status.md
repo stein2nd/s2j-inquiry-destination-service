@@ -106,7 +106,7 @@
 
 正本: [testing_spec.md](./testing_spec.md) / [ci.md](./engineering/ci.md)
 
-* [x] Test: [testing_spec.md](./testing_spec.md) 必須カバレッジ — Unit (`InquiryDestinationServiceTest` + `ContractSnapshotTest`、18 tests)
+* [x] Test: [testing_spec.md](./testing_spec.md) 必須カバレッジ — Unit (`InquiryDestinationServiceTest` + `ContractSnapshotTest`、`20` tests)
 * [x] Local: `composer phpstan` がエラーなく通る (level8)
 * [x] Local: PHPUnit 全緑 (`composer test`)
 * [x] Local: PHPCS 警告0 (`composer lint:php` / `composer phpcs`)

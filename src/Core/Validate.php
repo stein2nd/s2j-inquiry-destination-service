@@ -35,7 +35,7 @@ final class Validate
         $codes = [];
 
         $inquiryType = $payload['inquiry_type'] ?? '';
-        if (! is_string($inquiryType) || ! InquiryTypes::isValid($inquiryType)) {
+        if (! is_string($inquiryType) || ! InquiryTypes::isValidSlug($inquiryType)) {
             $codes[] = 'inquiry_type_invalid';
         }
 

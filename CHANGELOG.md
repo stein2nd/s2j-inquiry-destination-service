@@ -2,6 +2,22 @@
 
 ## unreleased
 
+## 0.2.0 - 2026-10-20
+
+### Breaking Changes
+
+* **`inquiry_type`**: Core の固定列挙 (`sales` / `recruit` のみ) を廃止。プラグインが渡す **slug** は形式検証のみ (`inquiry_type_invalid` = 空または `^[a-z][a-z0-9_]{0,63}$` 非準拠)。v0.1では `event` 等は拒否されていたが、v0.2以降は有効 slug なら受理する。
+* **Mail 件名 (`subject_hint` 空時)**: 英語固定ラベル (`Sales inquiry` 等) を廃止。**slug をそのまま** 件名ラベルに使う。表示名はプラグインが `subject_hint` で渡す前提。
+
+### Changed
+
+* `docs/`: [payload_spec.md](./docs/core/payload_spec.md)、[validation_spec.md](./docs/core/validation_spec.md)、[data_dictionary.md](./docs/contracts/data_dictionary.md)、[mail_adapter_spec.md](./docs/core/mail_adapter_spec.md) — 種別カタログはプラグイン SoT
+* `Core/InquiryTypes`: slug 形式検証に変更
+
+### Added
+
+* Test: 任意 slug (`product_feedback`) の正常パス、`inquiry_type_invalid` (空・形式不正)
+
 ## 0.1.0 - 2026-10-20
 
 ### Added

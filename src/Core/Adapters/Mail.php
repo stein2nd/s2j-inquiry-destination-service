@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace S2J\InquiryDestinationService\Core\Adapters;
 
-use S2J\InquiryDestinationService\Core\InquiryTypes;
 use S2J\InquiryDestinationService\Core\Validate;
 
 final class Mail
@@ -19,9 +18,7 @@ final class Mail
     {
         $inquiryType = (string) ($payload['inquiry_type'] ?? '');
         $subjectHint = (string) ($payload['subject_hint'] ?? '');
-        $label = $subjectHint !== ''
-            ? $subjectHint
-            : InquiryTypes::subjectFallbackLabel($inquiryType);
+        $label = $subjectHint !== '' ? $subjectHint : $inquiryType;
 
         return [
             'to' => Validate::normalizedMailTo($destination),
