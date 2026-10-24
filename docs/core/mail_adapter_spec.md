@@ -26,7 +26,7 @@
 
 ## 件名
 
-* 形式 (例): `[{inquiry_type}] {subject_hint または固定ラベル}`。
+* 形式 (例): `[{inquiry_type}] {subject_hint または slug}` (`subject_hint` 空時は slug — [payload_spec.md](./payload_spec.md))。
 * **初版**: 人が読む文言の i18n は **プラグイン** が `subject_hint` に載せるのが正。`subject_hint` 空時は Core が **`inquiry_type` slug をそのまま** 件名ラベルに使う (v0.2.0以降)。
 * **将来 (minor)**: `locale` を参照した Core 側 i18n を足す場合は、本 spec と [payload_spec.md](./payload_spec.md) を同時更新する。
 

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace S2J\InquiryDestinationService\Core;
 
 use S2J\InquiryDestinationService\Core\Adapters\Mail;
+use S2J\InquiryDestinationService\Core\Adapters\SaasAsana;
+use S2J\InquiryDestinationService\Core\Adapters\SaasBacklog;
 
 final class Dispatch
 {
@@ -12,10 +14,7 @@ final class Dispatch
      * @param array<string, mixed> $payload normalized
      * @param array<string, mixed> $destination
      *
-     * @return array{
-     *     material: array{to: list<string>, subject: string, body: string, content_type: string},
-     *     deficiencies: list<string>
-     * }
+     * @return array{material: array<string, mixed>, deficiencies: list<string>}
      */
     public static function buildMaterial(array $payload, array $destination): array
     {
@@ -28,11 +27,15 @@ final class Dispatch
 
         $kind = (string) ($destination['kind'] ?? '');
 
+        $material = match ($kind) {
+            DestinationKinds::MAIL => Mail::buildMaterial($payload, $destination),
+            DestinationKinds::SAAS_BACKLOG => SaasBacklog::buildMaterial($payload, $destination),
+            DestinationKinds::SAAS_ASANA => SaasAsana::buildMaterial($payload, $destination),
+            default => throw new \InvalidArgumentException('Unsupported destination kind.'),
+        };
+
         return [
-            'material' => match ($kind) {
-                DestinationKinds::MAIL => Mail::buildMaterial($payload, $destination),
-                default => throw new \InvalidArgumentException('Unsupported destination kind.'),
-            },
+            'material' => $material,
             'deficiencies' => [],
         ];
     }

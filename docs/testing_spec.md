@@ -34,6 +34,28 @@ WordPress も `wp_mail` も SaaS API も使わずに、正規化、検証、Mail
 * 正規化: trim、未知キー除去、`meta` 非配列 coerce
 * `InvalidArgumentException`: validate 失敗状態で build を呼ぶ
 
+## 必須カバレッジ (v0.3— SaaS)
+
+[validation_spec.md §評価順](./core/validation_spec.md) の **追記コード (順9–14)** それぞれで真になる入力を1件以上。
+
+* `destination_kind_unsupported` 時に SaaS 専用コードが **付かない** 1件
+* `saas_asana` + `saas_endpoint` 空 → 不足 **なし** 1件
+* credentials 非 array → 該当 credentials_* がすべて付く1件 (Backlog)
+
+`build_dispatch_material`:
+
+* `saas_backlog`: form body に `projectId`, `issueTypeId`, `priorityId`, `summary`, `description`
+* 件名・本文が Mail スナップショットと **同一** になる同一ペイロード1件
+* `saas_asana`: JSON string、`{"data":{...}}` 形、`projects` が1GID
+
+`map_dispatch_result`:
+
+* Backlog: `201` + `id` → success、`external_ticket_id === '1'` (数値 id)
+* Backlog: `400` / `0` → `saas_http_error`
+* Backlog: `201` + id 欠落、`200` + id あり → `saas_body_invalid`
+* Asana: `201` + `parsed_body['data']['gid']` → success
+* SaaS outcome キー欠落 → `InvalidArgumentException`
+
 ## 外部依存
 
 * 時刻・乱数に依存しない。

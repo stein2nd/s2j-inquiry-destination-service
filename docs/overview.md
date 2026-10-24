@@ -2,13 +2,13 @@
 
 ## 概要
 
-**S2J Inquiry Destination Service** は、問い合わせフォーム送信を **統一ペイロード** に正規化し、種別 (`inquiry_type`) ごとの送信先 (初版は Mail) 向けに **メール文面または HTTP リクエスト材料** を組み立てる **WordPress 非依存** の Composer ライブラリです。
+**S2J Inquiry Destination Service** は、問い合わせフォーム送信を **統一ペイロード** に正規化し、種別 (`inquiry_type`) ごとの送信先 (Mail / Backlog / Asana) 向けに **メール文面または HTTP リクエスト材料** を組み立てる **WordPress 非依存** の Composer ライブラリです。
 
 Similarity Service や Webinar Survey Service と同型に、計算だけをパッケージ化し、副作用 (保存、フック、`wp_mail`、HTTP) は [S2J Inquiry Destination](https://github.com/stein2nd/s2j-inquiry-destination) プラグインが担います。
 
 ## 目的
 
-* 営業・採用など **種別 (`inquiry_type`) ごと** に異なる宛先に、同じペイロード形で送れるようにする (種別解決と宛先設定はプラグイン)。
+* **種別 slug (`inquiry_type`) ごと** に異なる宛先に、同じペイロード形で送れるようにする (種別の増減・表示名・`mail_to` はプラグイン、Core は slug 形式のみ検証)。
 * MW WP Form 依存や WP DB への案件蓄積を避け、将来は問い合わせ SaaS REST に差し替え可能にする。
 * PHPUnit のみで送信組立ロジックを回帰できるようにする。
 
@@ -27,8 +27,8 @@ Similarity Service や Webinar Survey Service と同型に、計算だけをパ�
 | 正規化 | 種別、氏名、連絡先、本文などを、比較可能なレコードにそろえる |
 | 検証 | 必須フィールド、宛先未設定などを、**不足コード** で返す |
 | 送信ポート | 宛先レコードの `kind` (`mail` 等) から、アダプタ関数を選ぶ |
-| アダプタ (初版) | Mail 用の件名、本文、To 一覧 (材料のみ) |
-| 結果写像 | 実行結果 (Mail は bool、SaaS は応答 JSON 等) を **個人情報を含まない** 結果レコードに写す |
+| アダプタ | Mail 文面、Backlog / Asana 向け HttpRequestMaterial (材料のみ) |
+| 結果写像 | 実行結果 (Mail は bool、SaaS は `http_status` + パース済み JSON) を **個人情報を含まない** 結果レコードに写す |
 
 ## 非責務
 

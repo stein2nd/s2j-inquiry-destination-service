@@ -54,7 +54,9 @@
 | [宛先](./core/destination_spec.md) | 種別 (`inquiry_type`) ごとの送信先レコード (1回の送信で1件) |
 | [検証](./core/validation_spec.md) | 不足コードと送信可否 |
 | [送信ポート](./core/dispatch_spec.md) | 種類 (`mail` 等) からアダプタ関数を選ぶ |
-| [Mail アダプタ](./core/mail_adapter_spec.md) | 管理者宛メール文面の組立 (初版) |
+| [Mail アダプタ](./core/mail_adapter_spec.md) | 管理者宛メール文面の組立 |
+| [Backlog SaaS アダプタ](./core/saas_backlog_adapter_spec.md) | Backlog 課題追加 HTTP 材料 |
+| [Asana SaaS アダプタ](./core/saas_asana_adapter_spec.md) | Asana タスク作成 HTTP 材料 |
 | [結果レコード](./core/result_spec.md) | 成功・失敗と個人情報の境界 |
 
 ### What (契約)
@@ -119,7 +121,7 @@ flowchart TD
 * Core が WordPress、`wp_mail`、HTTP クライアント、Snow Monkey Forms を知らない。
 * Contracts にビジネス規則 (不足判定の本体) を置かない。
 * Interfaces にドメイン規則を埋め込まない (薄い入口にする)。
-* 使わない送信先種類の空アダプタを置かない (初版は `mail` のみ)。
+* 使わない送信先種類の空アダプタを置かない (未登録 `kind` は送らない)。
 
 ## Source of Truth (SoT)
 

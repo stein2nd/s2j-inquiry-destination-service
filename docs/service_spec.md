@@ -34,9 +34,7 @@
     * 種別は少なくとも「営業」「採用」の2種類。
     * 発行後の処理状況は SaaS 側の管掌とする。
 * 問い合わせページ自体は Snow Monkey Forms で作る。
-* SaaS の具体名は未定。
-    * [Kansai WordPress Meetup](https://www.meetup.com/kansai-wordpress-meetup/) での相談では、[Backlog](https://backlog.com/ja/) / [Asana](https://asana.com/ja) / [Jooto](https://www.jooto.com) が候補に挙がった。
-        * Jooto は、2027-07-31を以て一般提供の終了がアナウンスされた。
+* v0.3仕様の問い合わせ SaaS: **[Backlog](https://backlog.com/ja/)** と **[Asana](https://asana.com/ja/)** (`kind`: `saas_backlog`, `saas_asana`)。Jooto は提供終了のため対象外。
 * アダプタとして下記を満たす (永続化と実行はプラグイン)。
     * 問い合わせ SaaS の API キーとエンドポイントは、プラグインが実行時に渡す。読み順は、環境変数か `wp-config.php` の定数が先で、どちらもない場合だけ管理画面のオプション。サーバー側の値がある場合、画面は上書きしない。
     * SaaS が決まるまでは、レンタルサーバー上の WordPress から PHPMailer (`wp_mail`) によるメール送信とする。
@@ -60,7 +58,7 @@
 
 | 責務 | 内容 |
 | --- | --- |
-| 正規化 | 種別 (少なくとも sales / recruit)、氏名、連絡先、本文などを比較可能なレコードにする |
+| 正規化 | 種別 slug (`inquiry_type`)、氏名、連絡先、本文などを比較可能なレコードにする (slug 形式は [payload_spec.md](./core/payload_spec.md)) |
 | 送信先ポート | プラグインが渡した宛先レコードの `kind` (`mail` 等) から、対応する関数を選ぶ |
 | アダプタ | 種類ごとに関数を1つ。統一ペイロードと宛先設定から、メール文面または HTTP リクエスト材料を返す。送信はしない |
 | 結果 | 成功 / 失敗、種別、SaaS 側チケット ID (あれば)。氏名、連絡先、本文は含めない。再送キューは持たない |
@@ -85,7 +83,7 @@ API キーはライブラリに埋め込みません。プラグインが実行�
 
 ## 宛先
 
-宛先は `inquiry_type` ごとに指定します。`sales` (営業) と `recruit` (採用) のように受け取る人が違う場合は、それぞれ別の宛先です。1つのアドレスに件名だけで区別することはしません。
+宛先は `inquiry_type` (slug) ごとに指定します。例として `sales` (営業) と `recruit` (採用) のように受け取る人が違う場合は、それぞれ別の宛先です。プラグインが追加した slug も同様です。1つのアドレスに件名だけで区別することはしません。
 
 件名に種別を付けるのは、届いたメールを人が見るためのラベルです。種別 slug のカタログと拡張手順は **プラグイン** が正本です ([contracts/data_dictionary.md](./contracts/data_dictionary.md))。
 
@@ -105,7 +103,7 @@ API キーはライブラリに埋め込みません。プラグインが実行�
 
 解決は **2段** です (正規フローは [concept.md §処理フロー](./concept.md#処理フロー-論理))。
 
-1. **プラグイン**: フォーム ID から `inquiry_type` を引き、設定からその種別用の **宛先レコード** (`DestinationRecord`) を組み立てて渡す。タイプ別 `mail_to` のマップはプラグインが保持する。
+1. **プラグイン**: フォーム ID から `inquiry_type` を引き、設定からその種別用の **宛先レコード** (`DestinationRecord`) を組み立て渡す。タイプ別 `mail_to` のマップはプラグインが保持する。
 2. **本ライブラリ**: 渡された宛先の `kind` (`mail` 等) からアダプタ関数を選ぶ ([core/dispatch_spec.md](./core/dispatch_spec.md))。
 
 初版で実装する `kind` は `mail` だけです。将来の問い合わせ SaaS は `saas_{product}` 形式 ([data_dictionary.md §destination.kind](./contracts/data_dictionary.md))。チャット通知 (Slack 等) は初版スコープ外です。未登録 `kind` は送りません。
@@ -170,7 +168,7 @@ ID が変わるのは、エクスポート / インポートで投稿を作り�
 1. 本 repo でスケルトン、統一ペイロード、Mail アダプタの純関数初版 (PHPUnit で WP なし)。
 2. S2J Inquiry Destination プラグインが Composer で require し、設定 UI と `wp_mail` をつなぐ。
 3. kis-inquiry (または SMF) からペイロードを渡す。Phase-2最初はメールのみ。
-4. SaaS 確定後、該当アダプタを本ライブラリに追加し、プラグイン設定で切り替える。
+4. v0.3: Backlog / Asana アダプタを本ライブラリに追加 (実装 PR)。プラグインで kind / credentials を切替。
 5. 旧案の `packages/inquiry-destination-service/` 仮置きは、本 repo に寄せる (モノレポ仕様の更新は kis-wordpress 側)。
 
 ## 決定
@@ -200,3 +198,4 @@ ID が変わるのは、エクスポート / インポートで投稿を作り�
 | 2026-10-05 | SaaS のエンドポイントと API キーはサイトに1組。プラグインは環境変数か定数を先に読む。本ライブラリはキーを持たない、と記録 |
 | 2026-10-19 | docs_mod を横断レビューし、正規フロー、`kind` 命名、PHP SoT、契約 canonical 形などを core/contracts に統一 |
 | 2026-10-19 | 確定仕様を `docs/` に移行。`docs_mod/` は改訂起草用として README のみ残す |
+| 2026-10-24 | v0.3SaaS 仕様 (Backlog / Asana) を `docs_mod/` から `docs/` に反映。API キー / PAT、HttpRequestMaterial |

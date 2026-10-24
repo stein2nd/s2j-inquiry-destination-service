@@ -8,10 +8,12 @@
 
 ### PHP 要件 (本ドキュメントが正本)
 
+[WordPress 必須要件](https://ja.wordpress.org/about/requirements/) に合わせ、本ライブラリの下限も **PHP v8.3** とします。
+
 | 区分 | 要件 | 備考 |
 | --- | --- | --- |
-| ライブラリ declare 下限 | `^8.1` | ルート `composer.json` の `require.php` と **同時** に更新する |
-| 本 repo 開発 / CI | PHP v8.1以上推奨 (Actions は v8.3) | dev 依存は `composer.lock` に従う (PHPUnit v10系) |
+| ライブラリ declare 下限 | `^8.3` | ルート `composer.json` の `require.php` と **同時** に更新する |
+| 本 repo 開発 / CI | PHP **8.3** ([php-quality.yml](../../.github/workflows/php-quality.yml)) | dev 依存は `composer.lock` に従う (PHPUnit v10系) |
 
 他ドキュメント (`architecture.md`、`php_api_spec.md` 等) は本表を参照し、独自の PHP 版数を書かない。
 

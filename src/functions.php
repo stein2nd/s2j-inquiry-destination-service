@@ -34,10 +34,7 @@ function validate_inquiry_dispatch(array $payload, array $destination): array
  * @param array<string, mixed> $payload
  * @param array<string, mixed> $destination
  *
- * @return array{
- *     material: array{to: list<string>, subject: string, body: string, content_type: string},
- *     deficiencies: list<string>
- * }
+ * @return array{material: array<string, mixed>, deficiencies: list<string>}
  */
 function build_dispatch_material(array $payload, array $destination): array
 {

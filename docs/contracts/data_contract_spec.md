@@ -18,6 +18,8 @@
 
 意味の詳細は [../core/payload_spec.md](../core/payload_spec.md) と [data_dictionary.md](./data_dictionary.md) をご覧ください。
 
+`inquiry_type` は **プラグイン定義の slug** です。JSON 例の `sales` は代表値にすぎません。Core は slug 形式のみ検証し、サイトに slug が登録されているかは見ません (v0.2.0以降)。
+
 ```json
 {
   "inquiry_type": "sales",
@@ -33,7 +35,7 @@
 
 ## 入力: DestinationRecord
 
-初版 Mail では `mail_to` のみ使用します。SaaS フィールドは、空文字 / 空オブジェクト可とします。
+Mail / SaaS とも、キー `kind`, `inquiry_type`, `mail_to`, `saas_endpoint`, `saas_project_id`, `credentials` を **すべて** 含めます (検証は [validation_spec.md](../core/validation_spec.md))。
 
 ```json
 {
@@ -45,6 +47,8 @@
   "credentials": {}
 }
 ```
+
+Backlog 例: `credentials` に `api_key`, `issue_type_id`, `priority_id`。Asana 例: `access_token` のみ (v0.3)。
 
 ## 出力: ValidateInquiryDispatchResult
 
@@ -60,6 +64,8 @@
 
 `material` 欠落時は `deficiencies` 非空とします (通常は validate 後のみ build を呼ぶ)。
 
+Mail 例:
+
 ```json
 {
   "material": {
@@ -72,20 +78,72 @@
 }
 ```
 
+### DispatchMaterialResult (判別)
+
+`destination.kind` が material 型の **正** とします (キー存在だけで推測しない)。
+
+| kind 群 | material 必須キー |
+| --- | --- |
+| `mail` | `to`, `subject`, `body`, `content_type` |
+| `saas_backlog`, `saas_asana` | `method`, `url`, `headers`, `body` |
+
+## HttpRequestMaterial
+
+SaaS アダプタの `build_dispatch_material` 出力 `material` 型です。
+
+| フィールド | 型 | 説明 |
+| --- | --- | --- |
+| method | string | v0.3は `POST` のみ |
+| url | string | 完全 URL (Backlog: クエリーに API キーを付けない) |
+| headers | array&lt;string, string&gt; | ヘッダー名 → 値 |
+| body | string | form-urlencoded **または** JSON の **生 string** (配列 DTO ではない) |
+
+PHPUnit canonical 形は PHP 配列です。Fixture の API キーは `(runtime)` 等のプレースホルダ可とします。
+
+```json
+{
+  "method": "POST",
+  "url": "https://example.backlog.com/api/v2/issues",
+  "headers": {
+    "Backlog-API-Key": "(runtime)",
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+  "body": "projectId=1&summary=..."
+}
+```
+
+## SaasExecutionOutcome (map 入力)
+
+| フィールド | 型 | 説明 |
+| --- | --- | --- |
+| http_status | int | 応答コード (通信失敗時 `0` 可) |
+| parsed_body | array&lt;string, mixed&gt; | `json_decode(..., true)` の結果。失敗時は `[]` |
+
+Backlog 成功例:
+
+```json
+{
+  "http_status": 201,
+  "parsed_body": { "id": 987654 }
+}
+```
+
+Asana 成功例:
+
+```json
+{
+  "http_status": 201,
+  "parsed_body": {
+    "data": { "gid": "1200000000000000", "name": "..." }
+  }
+}
+```
+
+写像: [result_spec.md](../core/result_spec.md)。
+
 ## 出力: ResultRecord
 
-[../core/result_spec.md](../core/result_spec.md) 参照。`correlation_id` は任意 (プラグインが `map_dispatch_result` の context で渡し、写像時にエコー推奨)。
-
-## 将来: HttpRequestMaterial (SaaS)
-
-SaaS アダプタ追加時に本節を追記します。
-
-| フィールド | 説明 |
-| --- | --- |
-| method | `POST` 等 |
-| url | 完全 URL (プラグインが credentials と合成済みでも可) |
-| headers | 連想配列。`Authorization` は材料に含めてよいが **結果・ログ規則はプラグイン** |
-| body | JSON 文字列 |
+[../core/result_spec.md](../core/result_spec.md) 参照。`http_status`: SaaS 時 **int**、Mail 時 **null**。`external_ticket_id` は **常に string** (空文字可)。
 
 ## 関連
 

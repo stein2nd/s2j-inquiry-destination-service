@@ -62,11 +62,80 @@ final class Validate
         $kind = self::destinationString($destination, 'kind');
         if (! DestinationKinds::isSupported($kind)) {
             $codes[] = 'destination_kind_unsupported';
-        } elseif ($kind === DestinationKinds::MAIL && self::validMailToCount($destination) === 0) {
-            $codes[] = 'destination_empty';
+        } else {
+            self::appendKindSpecificDeficiencies($destination, $kind, $codes);
         }
 
         return $codes;
+    }
+
+    /**
+     * @param array<string, mixed> $destination
+     * @param list<string>         $codes
+     */
+    private static function appendKindSpecificDeficiencies(
+        array $destination,
+        string $kind,
+        array &$codes
+    ): void {
+        if ($kind === DestinationKinds::MAIL) {
+            if (self::validMailToCount($destination) === 0) {
+                $codes[] = 'destination_empty';
+            }
+
+            return;
+        }
+
+        if ($kind === DestinationKinds::SAAS_BACKLOG) {
+            if (self::destinationString($destination, 'saas_endpoint') === '') {
+                $codes[] = 'destination_saas_endpoint_empty';
+            }
+            if (self::destinationString($destination, 'saas_project_id') === '') {
+                $codes[] = 'destination_saas_project_id_empty';
+            }
+            if (! self::credentialNonEmpty($destination, 'api_key')) {
+                $codes[] = 'destination_credentials_api_key_empty';
+            }
+            if (! self::credentialNonEmpty($destination, 'issue_type_id')) {
+                $codes[] = 'destination_credentials_issue_type_id_empty';
+            }
+            if (! self::credentialNonEmpty($destination, 'priority_id')) {
+                $codes[] = 'destination_credentials_priority_id_empty';
+            }
+
+            return;
+        }
+
+        if ($kind === DestinationKinds::SAAS_ASANA) {
+            if (self::destinationString($destination, 'saas_project_id') === '') {
+                $codes[] = 'destination_saas_project_id_empty';
+            }
+            if (! self::credentialNonEmpty($destination, 'access_token')) {
+                $codes[] = 'destination_credentials_access_token_empty';
+            }
+        }
+    }
+
+    /**
+     * @param array<string, mixed> $destination
+     */
+    private static function credentialNonEmpty(array $destination, string $key): bool
+    {
+        $credentials = $destination['credentials'] ?? null;
+        if (! is_array($credentials)) {
+            return false;
+        }
+
+        $value = $credentials[$key] ?? null;
+        if (is_int($value)) {
+            return $value > 0;
+        }
+
+        if (is_string($value)) {
+            return trim($value) !== '';
+        }
+
+        return false;
     }
 
     /**

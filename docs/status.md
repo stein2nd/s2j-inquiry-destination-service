@@ -3,7 +3,7 @@
 本ページは、現状の実装状況を機能単位で一覧します (製品全体の「いま」)。
 索引は [specs.md](./specs.md) です。統合見取り図は [service_spec.md](./service_spec.md) です。規則・型の Source of Truth は [core/](./core/payload_spec.md) と [contracts/](./contracts/data_contract_spec.md) です ([governance/documentation_governance.md](./governance/documentation_governance.md) と同じ)。
 
-最終更新: 2026-10-20
+最終更新: 2026-10-24
 
 ## 仕様書 (参照元)
 
@@ -22,11 +22,12 @@
 | 仕様分割 (`docs/`) | 確定 | — | [§ 仕様分割](#status-spec-docs) |
 | Composer スケルトン (`src/` 公開 API) | 実装済み | 100 | [§ Composer](#status-composer) (12/12) |
 | ペイロード正規化 | 実装済み | 100 | [§ 正規化](#status-payload) (4/4) |
-| 検証 (不足コード一式) | 実装済み | 100 | [§ 検証](#status-validate) (10/10) |
+| 検証 (不足コード一式) | 実装済み | 100 | [§ 検証 Mail](#status-validate) (11/11) + [§ 検証 SaaS](#status-validate-saas) (10/10) |
 | Mail アダプタ | 実装済み | 100 | [§ Mail](#status-mail) (5/5) |
-| 結果写像 | 実装済み | 100 | [§ 結果写像](#status-result) (4/4) |
+| SaaS アダプタ (Backlog / Asana) | 実装済み | 100 | [§ SaaS 材料](#status-saas-material) (3/3) |
+| 結果写像 | 実装済み | 100 | [§ 結果 Mail](#status-result) (4/4) + [§ 結果 SaaS](#status-result-saas) (7/7) |
 | PHPUnit / PHPStan / PHPCS | 実装済み | 100 | [§ 品質ゲート](#status-quality) (8/8) |
-| Packagist 公開 | 実装済み | 100 | [§ Packagist](#status-packagist) (5/5) |
+| Packagist 公開 | 実装済み | 100 | [§ Packagist](#status-packagist) (6/6) |
 | プラグインからの require | 未 | 0 | [§ プラグイン (HTTPS)](#status-plugin-https) (0/9) |
 
 ## 100% 完了条件チェックリスト
@@ -35,7 +36,7 @@
 
 ローカルまたは CI 上で、WordPress、実 SMTP、ステージング URL なしに完結する項です。正本: [testing_spec.md](./testing_spec.md) (Unit)、[ci.md](./engineering/ci.md)。
 
-一括実行: `npm run quality:php` (= `scripts/verify/all.sh` と同順)。
+一括実行: `npm run quality:php` (= `scripts/verify/all.sh` と同順)。`2026-10-24` 時点: PHPUnit **39** tests、`npm run quality:php` / `npm run lint:docs` 通過。
 
 #### 仕様分割 {#status-spec-docs}
 
@@ -49,7 +50,7 @@
 * [x] `composer.json` — `autoload.files` に `src/functions.php`
 * [x] Test: `InquiryDestinationServiceTest::testNormalizeTrimsStringsAndCoercesMeta` — 公開 `normalize_inquiry_payload`
 * [x] Test: `InquiryDestinationServiceTest::testValidateReturnsStableDeficiencyOrder` — 公開 `validate_inquiry_dispatch`
-* [x] Test: `InquiryDestinationServiceTest::testSingleDeficiencyCodes` — 初版 deficiency 全8コード (data provider)
+* [x] Test: `InquiryDestinationServiceTest::testSingleDeficiencyCodes` — Mail 向け deficiency 全8コード (data provider)
 * [x] Test: `InquiryDestinationServiceTest::testDestinationEmptyWhenMailToHasOnlyInvalidAddresses` — `destination_empty` (不正のみ)
 * [x] Test: `InquiryDestinationServiceTest::testBuildDispatchMaterialProducesMailMaterial` — 公開 `build_dispatch_material`
 * [x] Test: `InquiryDestinationServiceTest::testBuildDispatchMaterialThrowsWhenNotValidated` — deficiencies 非空で `InvalidArgumentException`
@@ -68,7 +69,7 @@
 * [x] Test: `testNormalizeTrimsStringsAndCoercesMeta` — 未知トップレベルキー除去
 * [x] Test: `testValidateReturnsDestinationUnchanged` — `destination` を正規化せず入力どおり返す ([validation_spec.md](./core/validation_spec.md))
 
-#### 検証 (不足コード) {#status-validate}
+#### 検証 (不足コード — Mail) {#status-validate}
 
 正本: [validation_spec.md](./core/validation_spec.md)
 
@@ -82,6 +83,22 @@
 * [x] Test: `testSingleDeficiencyCodes` — `destination_empty` (`mail_to` 空)
 * [x] Test: `testValidateReturnsStableDeficiencyOrder` — 複数不足の安定順
 * [x] Test: `testRecruitHappyPathValidateAndBuild` — `recruit` 正常パス (validate + build)
+* [x] Test: `testCustomInquiryTypeSlugIsAccepted` — プラグイン定義 slug (`product_feedback`)
+
+#### 検証 (不足コード — SaaS v0.3) {#status-validate-saas}
+
+正本: [validation_spec.md §評価順](./core/validation_spec.md)
+
+* [x] Test: `SaasInquiryDestinationServiceTest::testBacklogSaasEndpointEmpty` — `destination_saas_endpoint_empty`
+* [x] Test: `testBacklogSaasProjectIdEmpty` / `testAsanaSaasProjectIdEmpty` — `destination_saas_project_id_empty`
+* [x] Test: `testSaasSingleDeficiencyCodes` — `destination_credentials_api_key_empty`
+* [x] Test: `testSaasSingleDeficiencyCodes` — `destination_credentials_issue_type_id_empty`
+* [x] Test: `testSaasSingleDeficiencyCodes` — `destination_credentials_priority_id_empty`
+* [x] Test: `testSaasSingleDeficiencyCodes` — `destination_credentials_access_token_empty`
+* [x] Test: `testUnsupportedKindDoesNotAddSaasDeficiencies` — `slack` 時 SaaS 専用コードなし
+* [x] Test: `testAsanaAllowsEmptySaasEndpoint` — Asana + endpoint 空 → 不足なし
+* [x] Test: `testBacklogCredentialsNotArrayAddsAllCredentialDeficiencies` — credentials 非 array (Backlog)
+* [x] Test: `testSingleDeficiencyCodes` — `destination_kind_unsupported` は `slack` (SaaS 登録後も未登録 kind のみ)
 
 #### Mail アダプタ {#status-mail}
 
@@ -90,10 +107,18 @@
 * [x] Test: `testBuildDispatchMaterialProducesMailMaterial` — `to` / `subject` / `body` / `content_type`
 * [x] Test: `testBuildDispatchMaterialProducesMailMaterial` — `phone` 空時は本文に電話行を出さない
 * [x] Test: `testBuildDispatchMaterialProducesMailMaterial` — 件名 `[{inquiry_type}] {subject_hint}`
-* [x] Test: `testBuildUsesSubjectFallbackWhenSubjectHintEmpty` / `testRecruitHappyPathValidateAndBuild` — `subject_hint` 空時 ASCII フォールバック
+* [x] Test: `testBuildUsesSubjectFallbackWhenSubjectHintEmpty` / `testRecruitHappyPathValidateAndBuild` — `subject_hint` 空時 slug フォールバック
 * [x] Test: `ContractSnapshotTest::testMailSalesBodyMatchesContractFixture` — [tests/Fixtures/contracts/mail_sales_body.txt](../tests/Fixtures/contracts/mail_sales_body.txt)
 
-#### 結果写像 {#status-result}
+#### SaaS 材料 (Backlog / Asana) {#status-saas-material}
+
+正本: [saas_backlog_adapter_spec.md](./core/saas_backlog_adapter_spec.md) / [saas_asana_adapter_spec.md](./core/saas_asana_adapter_spec.md)
+
+* [x] Test: `testBacklogBuildMaterialMatchesMailPlainText` — form + Mail 同一本文
+* [x] Test: `testAsanaBuildMaterialJsonDataWrapper` — JSON `data` + `projects` 1件
+* [x] Test: `testBacklogBuildMaterialMatchesMailPlainText` — `projectId` / `issueTypeId` / `priorityId` / `summary` / `description`
+
+#### 結果写像 (Mail) {#status-result}
 
 正本: [result_spec.md](./core/result_spec.md)
 
@@ -102,11 +127,23 @@
 * [x] Test: `testMapDispatchResultForMail` — `context['correlation_id']` エコー
 * [x] Test: `testMapDispatchResultForMail` — Mail 成功時 `external_ticket_id` 空文字、`http_status` `null`
 
+#### 結果写像 (SaaS v0.3) {#status-result-saas}
+
+正本: [result_spec.md §SaaS 写像](./core/result_spec.md)
+
+* [x] Test: `testMapBacklogSuccessNumericId` — `201` + `id` → `external_ticket_id === '1'`
+* [x] Test: `testMapBacklogHttpErrors` — `400` / `0` → `saas_http_error`
+* [x] Test: `testMapBacklogBodyInvalid` — `201` + id 欠落、`200` + id → `saas_body_invalid`
+* [x] Test: `testMapAsanaSuccess` — `parsed_body['data']['gid']`、`correlation_id` エコー
+* [x] Test: `testMapBacklogFailureEchoesHttpStatus` — 失敗時 `http_status` エコー
+* [x] Test: `testMapSaasThrowsWhenOutcomeInvalid` — outcome 非 array → `InvalidArgumentException`
+* [x] Test: `testMapSaasThrowsWhenKeysMissing` — 必須キー欠落 → `InvalidArgumentException`
+
 #### PHPUnit / PHPStan / PHPCS {#status-quality}
 
 正本: [testing_spec.md](./testing_spec.md) / [ci.md](./engineering/ci.md)
 
-* [x] Test: [testing_spec.md](./testing_spec.md) 必須カバレッジ — Unit (`InquiryDestinationServiceTest` + `ContractSnapshotTest`、`20` tests)
+* [x] Test: [testing_spec.md](./testing_spec.md) 必須カバレッジ — Unit (`InquiryDestinationServiceTest` + `SaasInquiryDestinationServiceTest` + `ContractSnapshotTest`、**39** tests)
 * [x] Local: `composer phpstan` がエラーなく通る (level8)
 * [x] Local: PHPUnit 全緑 (`composer test`)
 * [x] Local: PHPCS 警告0 (`composer lint:php` / `composer phpcs`)
@@ -122,14 +159,16 @@
 * [x] Packagist: [s2j/inquiry-destination-service](https://packagist.org/packages/s2j/inquiry-destination-service) 登録済み (`dev-main`)
 * [x] Packagist: auto-update — `This package is auto-updated.` を確認 (2026-10-20)
 * [x] SemVer: CHANGELOG `0.1.0` 節 + タグ `v0.1.0` ([Packagist v0.1.0](https://packagist.org/packages/s2j/inquiry-destination-service#v0.1.0))
+* [x] SemVer: CHANGELOG `0.2.0` 節 + タグ `v0.2.0` ([Packagist v0.2.0](https://packagist.org/packages/s2j/inquiry-destination-service#v0.2.0))
+* [ ] SemVer: CHANGELOG `0.3.0` 節 + タグ `v0.3.0` (SaaS Core — 未リリース)
 * [x] `composer validate-composer` / `composer verify-dist` (.gitattributes / `scripts/verify-composer-dist.sh`)
-* [x] README — `composer require` / PHP v8.1以上 ([README.md](../README.md))
+* [x] README — `composer require` / PHP v8.3以上 ([README.md](../README.md))
 
 ---
 
 ### HTTPS 環境でのみテスト可能なこと
 
-ステージング / 本番 WordPress (HTTPS)、実メール到達、将来の SaaS 実 API 向けの項です。本 repo の PHPUnit では代替しません。プラグイン正本: [S2J Inquiry Destination](https://github.com/stein2nd/s2j-inquiry-destination) ([usage_spec.md §チェックリスト](./interfaces/usage_spec.md#プラグイン実装チェックリスト-mail-初版))。
+ステージング / 本番 WordPress (HTTPS)、実メール到達、SaaS 実 API 向けの項です。本 repo の PHPUnit では代替しません。プラグイン正本: [S2J Inquiry Destination](https://github.com/stein2nd/s2j-inquiry-destination) ([usage_spec.md §チェックリスト](./interfaces/usage_spec.md#プラグイン実装チェックリスト-mail-初版))。
 
 #### プラグイン結合 (Mail 初版) {#status-plugin-https}
 
@@ -143,15 +182,15 @@
 * [ ] ステージング (HTTPS): 管理者 Mail 成功後、自動返信のみ失敗しても完了画面を取り消さない
 * [ ] ステージング (HTTPS): 受信箱への到達確認 (SMTP / 転送設定に依存 — `wp_mail` true でも未到達があり得る)
 
-#### 外部結合 (将来) {#status-external-saas}
+#### 外部結合 (SaaS) {#status-external-saas}
 
-* [ ] SaaS `kind` 追加後: ステージング HTTPS から実 API 送信 + `map_dispatch_result` (`http_status` / `external_ticket_id`)
+* [ ] ステージング HTTPS: Backlog / Asana 実 API + `map_dispatch_result` (`http_status` / `external_ticket_id`)
 * [ ] プラグイン: credentials / エンドポイントを環境変数・定数から渡し、ログに載せない ([usage_spec.md](./interfaces/usage_spec.md))
 
 ## 補足
 
 * 本ライブラリは **`wp_mail` を呼ばない**。Mail 成功はプラグインが渡す **bool** を `map_dispatch_result` が写像するだけ ([testing_spec.md](./testing_spec.md))。
-* 初版に Zoom / SaaS HTTP アダプタは含めない ([implementation.md](./implementation.md#フェーズ-3--saas-未定))。
-* **実装％** は、各§チェックリストの `[x]` / 全項 (仕様分割は除く。Packagist / プラグイン HTTPS § は表記どおり)。
-* **非 HTTPS** § がフェーズ1 ([implementation.md §フェーズ1](./implementation.md#フェーズ-1--本-repo-wp-なし)) の受け入れ。**HTTPS** § はフェーズ2 (別 repo) + 運用確認。
+* SaaS **材料・写像** は v0.3Core 実装済。HTTP 実行はプラグイン ([implementation.md §フェーズ3](./implementation.md#フェーズ3-saas-backlog--asana--v030))。
+* **実装％** は、各§チェックリストの `[x]` / 全項 (仕様分割は除く。Packagist の未リリース行は `[ ]` のまま)。
+* **非 HTTPS** § がフェーズ1 ([implementation.md §フェーズ1](./implementation.md#フェーズ1-本-repo-wp-なし)) の受け入れ。**HTTPS** § はフェーズ2 (別 repo) + 運用確認。
 * ローカル品質ゲート: `npm run quality:php` (validate → dist → PHPUnit → PHPStan → PHPCS)。

@@ -8,12 +8,20 @@ final class DestinationKinds
 {
     public const MAIL = 'mail';
 
+    public const SAAS_BACKLOG = 'saas_backlog';
+
+    public const SAAS_ASANA = 'saas_asana';
+
     /**
      * @return list<string>
      */
     public static function supported(): array
     {
-        return [self::MAIL];
+        return [
+            self::MAIL,
+            self::SAAS_BACKLOG,
+            self::SAAS_ASANA,
+        ];
     }
 
     public static function isSupported(string $kind): bool

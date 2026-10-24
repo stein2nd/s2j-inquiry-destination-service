@@ -308,7 +308,7 @@ final class InquiryDestinationServiceTest extends TestCase
             ],
             'destination_kind_unsupported' => [
                 $basePayload,
-                array_merge($baseDestination, ['kind' => 'saas_backlog']),
+                array_merge($baseDestination, ['kind' => 'slack']),
                 'destination_kind_unsupported',
             ],
             'destination_empty' => [

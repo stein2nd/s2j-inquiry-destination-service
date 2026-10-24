@@ -1,6 +1,6 @@
 {
     "name": "s2j-inquiry-destination-service",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "Inquiry SaaS Adapter (WP-Independent)",
     "license": "GPL-3.0-or-later",
     "author": "Koutarou ISHIKAWA <stein2nd@gmail.com>",
@@ -30,7 +30,7 @@
         "quality:php": "bash scripts/verify/all.sh"
     },
     "devDependencies": {
-        "@s2j/docs-linter": "^1.0.29"
+        "@s2j/docs-linter": "^1.0.30"
     },
     "allowScripts": {
         "@s2j/docs-linter": true,

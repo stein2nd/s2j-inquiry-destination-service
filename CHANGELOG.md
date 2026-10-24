@@ -2,6 +2,24 @@
 
 ## unreleased
 
+## 0.3.0 - 2026-10-24
+
+### Added
+
+* **SaaS `kind`**: `saas_backlog` (Backlog 課題 form) / `saas_asana` (Asana JSON `data` ラッパー) — `Core/Adapters/SaasBacklog.php`, `SaasAsana.php`
+* **検証**: 不足コード6件 (`destination_saas_*`, `destination_credentials_*`)。`destination_kind_unsupported` 時は kind 専用行を評価しない
+* **写像**: `map_dispatch_result` — `SaasExecutionOutcome`、成功は HTTP **201** + ticket id、`saas_http_error` / `saas_body_invalid`
+* **`Core/Adapters/InquiryContent`**: Mail / SaaS 共通の件名・プレーン本文 (`Mail` を共有化)
+* **PHPUnit**: `SaasInquiryDestinationServiceTest` — [testing_spec.md](./docs/testing_spec.md) v0.3分岐 (計 **39** tests)
+
+### Changed
+
+* **PHP 要件**: `^8.3` ([WordPress 必須要件](https://ja.wordpress.org/about/requirements/) 準拠)。`build_and_release.md`、README、`.github/workflows/php-quality.yml` を同期
+* **`docs/`**: v0.3 (SaaS) 仕様確定 (Backlog / Asana adapter 新規、dispatch / validation / contracts / usage 更新)
+* **`docs/status.md`**: 非 HTTPS 完了条件に SaaS 検証・材料・写像を反映
+* **`build_dispatch_material`**: `material` 型を `array<string, mixed>` (Mail / HttpRequestMaterial 判別)
+* **`docs_mod/`**: 反映後は [README.md](./docs_mod/README.md) のみ残す (次回起草用)
+
 ## 0.2.0 - 2026-10-20
 
 ### Breaking Changes

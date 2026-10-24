@@ -18,15 +18,15 @@
 
 S2J Inquiry Destination が `composer require` し、Snow Monkey Forms + `wp_mail` を接続 ([usage_spec.md](./interfaces/usage_spec.md))。
 
-## フェーズ3: SaaS (未定)
+## フェーズ3: SaaS (Backlog / Asana) — v0.3.0
 
-製品確定後、PR では下記を **すべて** 満たします (空 stub 禁止)。
+仕様は `docs/` に確定済。PR では下記を **すべて** 満たします (空 stub 禁止)。
 
 | # | タスク | 仕様 / ファイル |
 | --- | --- | --- |
 | 1 | `kind` を辞書で定義 (`saas_{product}`) | [data_dictionary.md](./contracts/data_dictionary.md) |
 | 2 | dispatch レジストリに1行追加 | [core/dispatch_spec.md](./core/dispatch_spec.md) |
-| 3 | アダプタ関数を実装 | `Core/Adapters/{Product}.php` |
+| 3 | Backlog / Asana アダプタ | `Core/Adapters/SaasBacklog.php`, `SaasAsana.php` |
 | 4 | HttpRequestMaterial を契約に追記 | [contracts/data_contract_spec.md](./contracts/data_contract_spec.md) |
 | 5 | 不足 / failure コードを必要なら minor 追加 | [validation_spec.md](./core/validation_spec.md), [data_dictionary.md](./contracts/data_dictionary.md) |
 | 6 | PHPUnit 代表入力 + 写像 | [testing_spec.md](./testing_spec.md) |

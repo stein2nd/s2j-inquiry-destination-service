@@ -70,9 +70,10 @@ if (!$result['success']) {
 
 ## プラグインが持つもの (本ライブラリ外)
 
-* フォーム ID → `inquiry_type` オプション
-* 種別 (`inquiry_type`) ごとの `mail_to` 設定 → **宛先レコード組立**
-* 環境変数 / 定数 / オプションの API キー (将来 SaaS)
+* フォーム ID → `inquiry_type` slug (管理画面の種別カタログ)
+* 種別 slug ごとの `mail_to` 設定 → **宛先レコード組立**
+* カスタム slug 送信時は **`subject_hint` に表示名** (i18n) を渡す ([mail_adapter_spec.md](../core/mail_adapter_spec.md))
+* 環境変数 / 定数 / オプションの API キー (SaaS)
 * `error_log` (時刻、HTTP ステータス・コード、`failure_code`、`correlation_id` 等。PII なし)
 
 ## プラグイン実装チェックリスト (Mail 初版)
@@ -88,10 +89,82 @@ if (!$result['success']) {
 
 正規フロー: [concept.md §処理フロー](../concept.md#処理フロー-論理)
 
+## 典型フロー (SaaS — Backlog 例)
+
+手順1–2 (ペイロード、`validate_inquiry_dispatch`) は Mail と同型です。宛先キーは [destination_spec.md](../core/destination_spec.md) どおり **すべて** 渡します。
+
+Asana は `kind` → `saas_asana`、`credentials.access_token`、`map_dispatch_result` 第1引数 → `saas_asana` ([saas_asana_adapter_spec.md](../core/saas_asana_adapter_spec.md))。
+
+```php
+$destination = [
+    'kind'            => 'saas_backlog',
+    'inquiry_type'    => 'sales',
+    'mail_to'         => [],
+    'saas_endpoint'   => 'https://example.backlog.com',
+    'saas_project_id' => '42',
+    'credentials'     => [
+        'api_key'        => $runtime_api_key,
+        'issue_type_id'  => $plugin_issue_type_id,
+        'priority_id'    => $plugin_priority_id,
+    ],
+];
+
+$validated = validate_inquiry_dispatch($payload, $destination);
+if ($validated['deficiencies'] !== []) {
+    return;
+}
+
+$built = build_dispatch_material($validated['payload'], $validated['destination']);
+$material = $built['material'];
+
+$response = wp_remote_request($material['url'], [
+    'method'  => $material['method'],
+    'headers' => $material['headers'],
+    'body'    => $material['body'],
+    'timeout' => 30,
+]);
+
+$http_status = (int) wp_remote_retrieve_response_code($response);
+if (is_wp_error($response)) {
+    $http_status = 0;
+}
+
+$raw_body = is_wp_error($response) ? '' : wp_remote_retrieve_body($response);
+$parsed   = json_decode($raw_body, true);
+if (! is_array($parsed)) {
+    $parsed = [];
+}
+
+$result = map_dispatch_result('saas_backlog', [
+    'http_status' => $http_status,
+    'parsed_body' => $parsed,
+], [
+    'inquiry_type'   => $validated['payload']['inquiry_type'],
+    'correlation_id' => $plugin_correlation_id,
+]);
+```
+
+## プラグインが持つもの (SaaS)
+
+* Backlog: スペース URL、API キー、課題種別 ID / 優先度 ID → **`credentials` に載せる**
+* Asana: PAT、`saas_project_id` (種別ごと GID1件)
+* `http_status` 0 (通信エラー) → `saas_http_error` ([data_dictionary.md](../contracts/data_dictionary.md))
+* レスポンス body のログ出力禁止 (service_spec 境界)
+
+## プラグイン実装チェックリスト (SaaS v0.3)
+
+* [ ] DestinationRecord の **全キー** を渡した
+* [ ] 秘密情報は材料のみ。結果・ログに載せない
+* [ ] Backlog: クエリー `apiKey=` 禁止 (ヘッダーのみ)
+* [ ] deficiencies 非空なら HTTP しない
+* [ ] JSON decode 失敗 → `parsed_body: []`
+* [ ] `external_ticket_id` が取れるまで完了画面を出さない
+* [ ] `map_dispatch_result` に `inquiry_type` と `correlation_id` を渡す
+
 ## Composer
 
 ```bash
-composer require s2j/inquiry-destination-service:^0.0.1
+composer require s2j/inquiry-destination-service:^0.3.0
 ```
 
 ## 関連

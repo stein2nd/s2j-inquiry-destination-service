@@ -1,6 +1,6 @@
 # S2J Inquiry Destination Service
 
-問い合わせ送信を統一ペイロードに正規化し、Mail / 将来 SaaS 向けの送信材料を組み立てる WordPress 非依存の Composer ライブラリです。
+問い合わせ送信を統一ペイロードに正規化し、Mail / Backlog / Asana 向けの送信材料を組み立てる WordPress 非依存の Composer ライブラリです。
 
 ## 仕様
 
@@ -8,10 +8,10 @@
 
 ## インストール
 
-PHP **8.1以上** が必要です。
+PHP **8.3以上** が必要です ([WordPress 必須要件](https://ja.wordpress.org/about/requirements/) に準拠)。
 
 ```bash
-composer require s2j/inquiry-destination-service:^0.2.0
+composer require s2j/inquiry-destination-service:^0.3.0
 ```
 
 Packagist 未公開の間は VCS またはパス repository を利用します。

@@ -42,6 +42,10 @@ jobs:
           coverage: none
           tools: composer:v2
 
+      - name: Assert PHP requirement (WordPress-aligned minimum)
+        run: |
+          php -r '$j=json_decode(file_get_contents("composer.json"),true); exit(version_compare(substr($j["require"]["php"],1),"8.3.0",">=")?0:1);'
+
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist
 

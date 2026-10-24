@@ -16,36 +16,11 @@ final class Mail
      */
     public static function buildMaterial(array $payload, array $destination): array
     {
-        $inquiryType = (string) ($payload['inquiry_type'] ?? '');
-        $subjectHint = (string) ($payload['subject_hint'] ?? '');
-        $label = $subjectHint !== '' ? $subjectHint : $inquiryType;
-
         return [
             'to' => Validate::normalizedMailTo($destination),
-            'subject' => sprintf('[%s] %s', $inquiryType, $label),
-            'body' => self::buildBody($payload),
+            'subject' => InquiryContent::subjectLine($payload),
+            'body' => InquiryContent::plainBody($payload),
             'content_type' => 'text/plain',
         ];
-    }
-
-    /**
-     * @param array<string, mixed> $payload
-     */
-    private static function buildBody(array $payload): string
-    {
-        $sections = [
-            (string) ($payload['inquiry_type'] ?? ''),
-            (string) ($payload['name'] ?? ''),
-            (string) ($payload['email'] ?? ''),
-        ];
-
-        $phone = (string) ($payload['phone'] ?? '');
-        if ($phone !== '') {
-            $sections[] = $phone;
-        }
-
-        $sections[] = (string) ($payload['message'] ?? '');
-
-        return implode("\n\n", $sections);
     }
 }

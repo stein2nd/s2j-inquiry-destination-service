@@ -31,25 +31,35 @@ slug 規則そのものを変える場合は **major** (SemVer)。個別 slug �
 
 ### 命名規則
 
-* 初版: `mail` のみ実装する。
-* 問い合わせ SaaS REST: `saas_{product}` (例: `saas_backlog`、`saas_asana`)。製品確定後に **実装と同時** に辞書と dispatch レジストリに追加する。空 stub 禁止。
+* 問い合わせ SaaS REST: `saas_{product}` (例: `saas_backlog`、`saas_asana`)。**実装と同時** に辞書と dispatch レジストリに追加する。空 stub 禁止。
 * チャット通知 (Slack / LINE WORKS 等): 初版スコープ外。採用する場合も上記と同様に `kind` を辞書で先に定義してから実装する。
 
-| 値 | 初版 |
+| 値 | 状態 |
 | --- | --- |
-| `mail` | 実装あり |
+| `mail` | 実装済 |
+| `saas_backlog` | 仕様確定 (Backlog 課題追加) — 実装は v0.3.0 |
+| `saas_asana` | 仕様確定 (Asana タスク作成) — 実装は v0.3.0 |
 
 ## deficiencies
 
-[../core/validation_spec.md](../core/validation_spec.md) のコード列です。文字列 slug。スネークケース。
+[../core/validation_spec.md §不足コード — 評価順](../core/validation_spec.md) が正本です (文字列 slug、スネークケース)。
+
+v0.3追記:
+
+* `destination_saas_endpoint_empty`
+* `destination_saas_project_id_empty`
+* `destination_credentials_api_key_empty`
+* `destination_credentials_issue_type_id_empty`
+* `destination_credentials_priority_id_empty`
+* `destination_credentials_access_token_empty`
 
 ## failure_code (結果)
 
 | コード | 意味 |
 | --- | --- |
 | `mail_rejected` | `wp_mail` が false |
-| `saas_http_error` | 将来: 非 `2xx` |
-| `saas_body_invalid` | 将来: JSON / チケット ID 欠落 |
+| `saas_http_error` | `http_status` が `200`–`299` 以外 ( **`0` 含む** ) |
+| `saas_body_invalid` | `200`–`299` だが v0.3成功条件 ( **201 + ticket id** ) を満たさない |
 
 ## correlation_id
 
@@ -65,7 +75,11 @@ slug 規則そのものを変える場合は **major** (SemVer)。個別 slug �
 | --- | --- |
 | 統一ペイロード | SMF 送信をプラグインが翻訳した後の、本ライブラリ入力 |
 | 種別 (`inquiry_type`) | フォーム種別 slug。本文では **種別** と `inquiry_type` に統一する |
-| 材料 (material) | `wp_mail` 引数または HTTP リクエストの中身 |
+| MailMaterial | `to` / `subject` / `body` / `content_type` |
+| HttpRequestMaterial | method / url / headers / body (SaaS 材料) |
+| SaasExecutionOutcome | `map_dispatch_result` 第2引数 (SaaS 時): `http_status` + `parsed_body` |
+| external_ticket_id | SaaS 起票 ID (Backlog `id`, Asana task `gid`)。**string** |
+| 材料 (material) | MailMaterial または HttpRequestMaterial |
 | 送信ポート | 渡された宛先の `kind` からアダプタ関数を選ぶ層 (タイプ解決はプラグイン) |
 
 ## 関連

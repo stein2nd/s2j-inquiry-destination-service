@@ -8,7 +8,7 @@
 
 * FOP + Clean Coding。Clean Architecture の定型分割は、採用しない ([principles.md](./principles.md))。
 * Core は、純関数と不変レコードに閉じる。
-* 初版アダプタは、**Mail のみ**。SaaS は、製品確定後に関数を1つ追加する。
+* v0.3仕様: **Mail + Backlog + Asana** アダプタ (純関数)。HTTP 実行はプラグイン。
 * HTTP 実行アダプタ (`adapters/http/`) は、**置かない** (Webinar Service と同型。実行はプラグイン)。
 
 ## レイヤー構成
@@ -54,7 +54,9 @@ s2j-inquiry-destination-service/
 │   │   ├── Dispatch.php     # kind → アダプタ
 │   │   ├── Result.php       # 結果写像
 │   │   └── Adapters/
-│   │       └── Mail.php     # 初版のみ
+│   │       ├── Mail.php
+│   │       ├── SaasBacklog.php
+│   │       └── SaasAsana.php
 │   └── functions.php        # 公開 API (autoload.files 想定)
 └── tests/
     ├── Unit/
@@ -76,7 +78,7 @@ s2j-inquiry-destination-service/
 
 | 置き場 | 中身 |
 | --- | --- |
-| 本ライブラリ | ペイロード正規化、宛先検証、Mail / 将来 SaaS の **材料**、結果レコード |
+| 本ライブラリ | ペイロード正規化、宛先検証、Mail / SaaS の **材料**、結果レコード |
 | S2J Inquiry Destination | Snow Monkey Forms フック、設定、秘密情報、`wp_mail` / HTTP、ログ、UI |
 | kis-inquiry | KIS 専用ページ・文言 (送信ロジックは抱え込まない) |
 

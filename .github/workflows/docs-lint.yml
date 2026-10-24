@@ -4,12 +4,18 @@ on:
   push:
     paths:
       - "docs/**/*.md"
+      - "docs_mod/**/*.md"
+      - "README.md"
+      - "CHANGELOG.md"
       - "**/*.md"
       - ".textlintrc*"
       - "package.json"
   pull_request:
     paths:
       - "docs/**/*.md"
+      - "docs_mod/**/*.md"
+      - "README.md"
+      - "CHANGELOG.md"
       - "**/*.md"
       - ".textlintrc*"
       - "package.json"
