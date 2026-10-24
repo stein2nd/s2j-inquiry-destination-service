@@ -2,6 +2,14 @@
 
 ## unreleased
 
+### Changed
+
+* **`docs/status.md`**: v0.3.0リリース・ Packagist `0.3.0`・非 HTTPS 完了条件 (Impl / CI 証跡・チェック件数) を反映
+
+### Fixed
+
+* **`php-quality` CI**: `require.php` の caret (`^8.3`) 下限を `8.3.0` として assert (`version_compare`)。`^8.3` を `8.3` と解釈して落ちていた Step を修正
+
 ## 0.3.0 - 2026-10-24
 
 ### Added

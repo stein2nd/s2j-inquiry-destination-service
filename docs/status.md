@@ -3,7 +3,7 @@
 本ページは、現状の実装状況を機能単位で一覧します (製品全体の「いま」)。
 索引は [specs.md](./specs.md) です。統合見取り図は [service_spec.md](./service_spec.md) です。規則・型の Source of Truth は [core/](./core/payload_spec.md) と [contracts/](./contracts/data_contract_spec.md) です ([governance/documentation_governance.md](./governance/documentation_governance.md) と同じ)。
 
-最終更新: 2026-10-24
+最終更新: 2026-10-25
 
 ## 仕様書 (参照元)
 
@@ -20,14 +20,14 @@
 | 機能名 | 実装済み/未実装 | 実装％ | 完了条件 (100%) |
 | --- | --- | --- | --- |
 | 仕様分割 (`docs/`) | 確定 | — | [§ 仕様分割](#status-spec-docs) |
-| Composer スケルトン (`src/` 公開 API) | 実装済み | 100 | [§ Composer](#status-composer) (12/12) |
+| Composer スケルトン (`src/` 公開 API) | 実装済み | 100 | [§ Composer](#status-composer) (15/15) |
 | ペイロード正規化 | 実装済み | 100 | [§ 正規化](#status-payload) (4/4) |
 | 検証 (不足コード一式) | 実装済み | 100 | [§ 検証 Mail](#status-validate) (11/11) + [§ 検証 SaaS](#status-validate-saas) (10/10) |
 | Mail アダプタ | 実装済み | 100 | [§ Mail](#status-mail) (5/5) |
-| SaaS アダプタ (Backlog / Asana) | 実装済み | 100 | [§ SaaS 材料](#status-saas-material) (3/3) |
+| SaaS アダプタ (Backlog / Asana) | 実装済み | 100 | [§ SaaS 材料](#status-saas-material) (5/5) |
 | 結果写像 | 実装済み | 100 | [§ 結果 Mail](#status-result) (4/4) + [§ 結果 SaaS](#status-result-saas) (7/7) |
 | PHPUnit / PHPStan / PHPCS | 実装済み | 100 | [§ 品質ゲート](#status-quality) (8/8) |
-| Packagist 公開 | 実装済み | 100 | [§ Packagist](#status-packagist) (6/6) |
+| Packagist 公開 | 実装済み | 100 | [§ Packagist](#status-packagist) (7/7) |
 | プラグインからの require | 未 | 0 | [§ プラグイン (HTTPS)](#status-plugin-https) (0/9) |
 
 ## 100% 完了条件チェックリスト
@@ -36,7 +36,9 @@
 
 ローカルまたは CI 上で、WordPress、実 SMTP、ステージング URL なしに完結する項です。正本: [testing_spec.md](./testing_spec.md) (Unit)、[ci.md](./engineering/ci.md)。
 
-一括実行: `npm run quality:php` (= `scripts/verify/all.sh` と同順)。`2026-10-24` 時点: PHPUnit **39** tests、`npm run quality:php` / `npm run lint:docs` 通過。
+一括実行: `npm run quality:php` (= `scripts/verify/all.sh` と同順)。
+
+**最新確認 (2026-10-25):** リリース **v0.3.0** ([GitHub Release](https://github.com/stein2nd/s2j-inquiry-destination-service/releases/tag/v0.3.0))。PHPUnit **39** tests / 87 assertions。`npm run quality:php`・`npm run lint:docs` ローカル OK。CI: `php-quality` (PHP **8.3**、`^8.3` 下限 assert 含む)・`docs-lint` — `main` 成功。
 
 #### 仕様分割 {#status-spec-docs}
 
@@ -48,6 +50,8 @@
 正本: [php_api_spec.md](./interfaces/php_api_spec.md)
 
 * [x] `composer.json` — `autoload.files` に `src/functions.php`
+* [x] `composer.json` — `require.php` `^8.3` ([build_and_release.md](./engineering/build_and_release.md))
+* [x] Impl: `DestinationKinds` — `mail` / `saas_backlog` / `saas_asana` (`src/Core/DestinationKinds.php`)
 * [x] Test: `InquiryDestinationServiceTest::testNormalizeTrimsStringsAndCoercesMeta` — 公開 `normalize_inquiry_payload`
 * [x] Test: `InquiryDestinationServiceTest::testValidateReturnsStableDeficiencyOrder` — 公開 `validate_inquiry_dispatch`
 * [x] Test: `InquiryDestinationServiceTest::testSingleDeficiencyCodes` — Mail 向け deficiency 全8コード (data provider)
@@ -55,7 +59,8 @@
 * [x] Test: `InquiryDestinationServiceTest::testBuildDispatchMaterialProducesMailMaterial` — 公開 `build_dispatch_material`
 * [x] Test: `InquiryDestinationServiceTest::testBuildDispatchMaterialThrowsWhenNotValidated` — deficiencies 非空で `InvalidArgumentException`
 * [x] Test: `InquiryDestinationServiceTest::testMapDispatchResultForMail` — 公開 `map_dispatch_result` (true / false / `correlation_id`)
-* [x] CI: [.github/workflows/php-quality.yml](../.github/workflows/php-quality.yml) — `composer install` → PHPUnit
+* [x] CI: [.github/workflows/php-quality.yml](../.github/workflows/php-quality.yml) — `composer install` → `scripts/verify/all.sh`
+* [x] CI: `php-quality` — caret `^8.3` 下限 assert (WordPress 準拠チェック)
 * [x] CI: `php-quality` — PHPStan level8
 * [x] CI: `php-quality` — PHPCS 警告0 (`composer phpcs`)
 * [x] CI: `composer validate-composer` + `composer verify-dist` ([build_and_release.md](./engineering/build_and_release.md))
@@ -114,6 +119,8 @@
 
 正本: [saas_backlog_adapter_spec.md](./core/saas_backlog_adapter_spec.md) / [saas_asana_adapter_spec.md](./core/saas_asana_adapter_spec.md)
 
+* [x] Impl: `Core/Adapters/InquiryContent.php` — 件名・本文共有 (`Mail` / SaaS)
+* [x] Impl: `Core/Adapters/SaasBacklog.php` / `SaasAsana.php` — `HttpRequestMaterial`
 * [x] Test: `testBacklogBuildMaterialMatchesMailPlainText` — form + Mail 同一本文
 * [x] Test: `testAsanaBuildMaterialJsonDataWrapper` — JSON `data` + `projects` 1件
 * [x] Test: `testBacklogBuildMaterialMatchesMailPlainText` — `projectId` / `issueTypeId` / `priorityId` / `summary` / `description`
@@ -149,7 +156,7 @@
 * [x] Local: PHPCS 警告0 (`composer lint:php` / `composer phpcs`)
 * [x] Local: `npm run lint:docs`
 * [x] CI: `docs-lint` ([.github/workflows/docs-lint.yml](../.github/workflows/docs-lint.yml))
-* [x] CI: `php-quality` ([.github/workflows/php-quality.yml](../.github/workflows/php-quality.yml))
+* [x] CI: `php-quality` — GitHub Actions `main` 成功 ([workflow runs](https://github.com/stein2nd/s2j-inquiry-destination-service/actions/workflows/php-quality.yml))
 * [x] Local: `composer validate-composer` + `composer verify-dist` (`npm run quality:php`)
 
 #### Packagist 公開 {#status-packagist}
@@ -160,9 +167,9 @@
 * [x] Packagist: auto-update — `This package is auto-updated.` を確認 (2026-10-20)
 * [x] SemVer: CHANGELOG `0.1.0` 節 + タグ `v0.1.0` ([Packagist v0.1.0](https://packagist.org/packages/s2j/inquiry-destination-service#v0.1.0))
 * [x] SemVer: CHANGELOG `0.2.0` 節 + タグ `v0.2.0` ([Packagist v0.2.0](https://packagist.org/packages/s2j/inquiry-destination-service#v0.2.0))
-* [ ] SemVer: CHANGELOG `0.3.0` 節 + タグ `v0.3.0` (SaaS Core — 未リリース)
+* [x] SemVer: CHANGELOG `0.3.0` 節 + タグ `v0.3.0` + GitHub Release ([Packagist v0.3.0](https://packagist.org/packages/s2j/inquiry-destination-service#v0.3.0))
 * [x] `composer validate-composer` / `composer verify-dist` (.gitattributes / `scripts/verify-composer-dist.sh`)
-* [x] README — `composer require` / PHP v8.3以上 ([README.md](../README.md))
+* [x] README — `composer require ^0.3.0` / PHP v8.3以上 ([README.md](../README.md))
 
 ---
 
@@ -190,7 +197,8 @@
 ## 補足
 
 * 本ライブラリは **`wp_mail` を呼ばない**。Mail 成功はプラグインが渡す **bool** を `map_dispatch_result` が写像するだけ ([testing_spec.md](./testing_spec.md))。
-* SaaS **材料・写像** は v0.3Core 実装済。HTTP 実行はプラグイン ([implementation.md §フェーズ3](./implementation.md#フェーズ3-saas-backlog--asana--v030))。
-* **実装％** は、各§チェックリストの `[x]` / 全項 (仕様分割は除く。Packagist の未リリース行は `[ ]` のまま)。
+* SaaS **材料・写像** は **v0.3.0** でリリース済。HTTP 実行はプラグイン ([implementation.md §フェーズ3](./implementation.md#フェーズ3-saas-backlog--asana--v030))。
+* **実装％** は、各§チェックリストの `[x]` / 全項 (仕様分割は除く)。
+* **非 HTTPS** § の Packagist / CI / Unit は **100%** (2026-10-25)。フェーズ2以降は [HTTPS §](#https-環境でのみテスト可能なこと)。
 * **非 HTTPS** § がフェーズ1 ([implementation.md §フェーズ1](./implementation.md#フェーズ1-本-repo-wp-なし)) の受け入れ。**HTTPS** § はフェーズ2 (別 repo) + 運用確認。
 * ローカル品質ゲート: `npm run quality:php` (validate → dist → PHPUnit → PHPStan → PHPCS)。
