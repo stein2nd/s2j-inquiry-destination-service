@@ -44,7 +44,7 @@ jobs:
 
       - name: Assert PHP requirement (WordPress-aligned minimum)
         run: |
-          php -r '$j=json_decode(file_get_contents("composer.json"),true); exit(version_compare(substr($j["require"]["php"],1),"8.3.0",">=")?0:1);'
+          php -r '$j=json_decode(file_get_contents("composer.json"),true); $c=$j["require"]["php"]??""; if(!preg_match("/^\^(\d+)\.(\d+)(?:\.(\d+))?/",$c,$m)){fwrite(STDERR,"require.php: invalid or missing caret constraint\n"); exit(1);} $min=sprintf("%d.%d.%d",(int)$m[1],(int)$m[2],isset($m[3])?(int)$m[3]:0); if(version_compare($min,"8.3.0","<")){fwrite(STDERR,"require.php minimum must be >= 8.3.0, got {$c}\n"); exit(1);}'
 
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist
