@@ -13,6 +13,7 @@
 | 依存の向きは外 → 内 | Core / Interfaces は WordPress、HTTP を知らない |
 | 内側はビジネスルール | 正規化、宛先検証、文面組立 |
 | 外側は詳細 | プラグインが SMF、秘密情報、実送信 |
+| Transport / Email Auth | **Service 非目標**。SoT はプラグイン + ホスト ([core/transport_boundary_spec.md](./core/transport_boundary_spec.md)) |
 
 ## 純関数と不変レコード
 

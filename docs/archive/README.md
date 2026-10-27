@@ -16,6 +16,6 @@
 
 | 日付 | フォルダー | 種別 | 一言 |
 | --- | --- | --- | --- |
-| — | (まだなし) | — | 最初のイニシアチブ完了時に行を足す |
+| 2026-10-27 | [mod-v0.4-transport/](./mod-v0.4-transport/) | 改修 | Transport 境界 (Mail) 文書明確化 — 正本 [transport_boundary_spec.md](../core/transport_boundary_spec.md) |
 
 機械成果物は、ここには置きません。

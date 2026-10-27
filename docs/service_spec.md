@@ -27,6 +27,7 @@
 * 問い合わせページの作成 (それは Snow Monkey Forms)。
 * 発行後のチケットの処理状況 (それは SaaS 側の管掌)。
 * 公開日 / 更新日、ピン留め一覧 (それぞれ別サービス)。
+* Mail **Transport** (SMTP、DKIM / SPF / DMARC、受信箱到達): [core/transport_boundary_spec.md](./core/transport_boundary_spec.md)。
 
 ## 機能 (プロダクト観点)
 
@@ -121,6 +122,18 @@ API キーはライブラリに埋め込みません。プラグインが実行�
 
 どちらも、その応答が返るまでフォームは閉じません。自動返信は成功の条件に入れません。管理者宛が成功したあと、自動返信だけが失敗しても、プラグインは完了画面に進みます。本ライブラリは自動返信を知りません。
 
+## Transport 境界 (Mail)
+
+Service Core の契約は **材料 (`MailMaterial`) と結果写像** までとします。`wp_mail` 実行、From / Reply-To、Email Auth、SMTP は **プラグイン Runner + ホスト** です。
+
+| 層 | 参照 |
+| --- | --- |
+| 規則 SoT | [core/transport_boundary_spec.md](./core/transport_boundary_spec.md) |
+| 呼び出し | [interfaces/usage_spec.md](./interfaces/usage_spec.md) §Mail Runner |
+| プラグイン配信 | [mail_deliverability_spec.md (草案)](https://github.com/stein2nd/s2j-inquiry-destination/blob/main/docs_mod/mail_deliverability_spec.md) |
+
+レイヤ図: [transport_boundary_spec.md §レイヤ](./core/transport_boundary_spec.md) (mermaid)。
+
 ## プラグインの責務 (境界。詳細はプラグイン仕様)
 
 プラグイン仕様の詳細は [S2J Inquiry Destination の docs_mod/specs.md](https://github.com/stein2nd/s2j-inquiry-destination/blob/main/docs_mod/specs.md) です。
@@ -198,4 +211,5 @@ ID が変わるのは、エクスポート / インポートで投稿を作り�
 | 2026-10-05 | SaaS のエンドポイントと API キーはサイトに1組。プラグインは環境変数か定数を先に読む。本ライブラリはキーを持たない、と記録 |
 | 2026-10-19 | docs_mod を横断レビューし、正規フロー、`kind` 命名、PHP SoT、契約 canonical 形などを core/contracts に統一 |
 | 2026-10-19 | 確定仕様を `docs/` に移行。`docs_mod/` は改訂起草用として README のみ残す |
-| 2026-10-24 | v0.3SaaS 仕様 (Backlog / Asana) を `docs_mod/` から `docs/` に反映。API キー / PAT、HttpRequestMaterial |
+| 2026-10-24 | v0.3: SaaS 仕様 (Backlog / Asana) を `docs_mod/` から `docs/` に反映。API キー / PAT、HttpRequestMaterial |
+| 2026-10-27 | v0.4: Transport 境界 (Mail)。Service は MailMaterial まで。Email Auth / SMTP はプラグイン + ホスト |

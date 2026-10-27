@@ -75,7 +75,9 @@ v0.3追記:
 | --- | --- |
 | 統一ペイロード | SMF 送信をプラグインが翻訳した後の、本ライブラリ入力 |
 | 種別 (`inquiry_type`) | フォーム種別 slug。本文では **種別** と `inquiry_type` に統一する |
-| MailMaterial | `to` / `subject` / `body` / `content_type` |
+| MailMaterial | `to` / `subject` / `body` / `content_type` のみ (From / Transport 系キーは含めない — [transport_boundary_spec.md](../core/transport_boundary_spec.md)) |
+| Transport 層 | SMTP、`wp_mail` 経路、Email Auth (DKIM / SPF / DMARC)、到達性。Service 非目標 |
+| プラグイン Runner | `build_dispatch_material` 後に `wp_mail` / HTTP を実行する層 |
 | HttpRequestMaterial | method / url / headers / body (SaaS 材料) |
 | SaasExecutionOutcome | `map_dispatch_result` 第2引数 (SaaS 時): `http_status` + `parsed_body` |
 | external_ticket_id | SaaS 起票 ID (Backlog `id`, Asana task `gid`)。**string** |

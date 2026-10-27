@@ -207,6 +207,9 @@ final class InquiryDestinationServiceTest extends TestCase
         );
         self::assertSame('text/plain', $built['material']['content_type']);
         self::assertSame([], $built['deficiencies']);
+        $materialKeys = array_keys($built['material']);
+        sort($materialKeys);
+        self::assertSame(['body', 'content_type', 'subject', 'to'], $materialKeys);
     }
 
     public function testBuildDispatchMaterialThrowsWhenNotValidated(): void

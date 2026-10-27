@@ -18,6 +18,16 @@
 
 S2J Inquiry Destination が `composer require` し、Snow Monkey Forms + `wp_mail` を接続 ([usage_spec.md](./interfaces/usage_spec.md))。
 
+## フェーズ4: Transport 境界 (Mail) — v0.4.0
+
+公開 API・`MailMaterial` 形状は v0.3 互換。実装は **4キー固定** のまま ([transport_boundary_spec.md](./core/transport_boundary_spec.md))。
+
+| # | タスク | 仕様 / ファイル |
+| --- | --- | --- |
+| 1 | Transport 規則を docs に確定 | `docs/core/transport_boundary_spec.md` 他 |
+| 2 | Mail 材料が4キーのみであることを Unit で固定 | [testing_spec.md](./testing_spec.md), `InquiryDestinationServiceTest::testBuildDispatchMaterialProducesMailMaterial` |
+| 3 | プラグイン Companion v0.2 + `^0.4.0` | 別 repo |
+
 ## フェーズ3: SaaS (Backlog / Asana) — v0.3.0
 
 仕様は `docs/` に確定済。PR では下記を **すべて** 満たします (空 stub 禁止)。

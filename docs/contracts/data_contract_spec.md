@@ -64,7 +64,7 @@ Backlog 例: `credentials` に `api_key`, `issue_type_id`, `priority_id`。Asana
 
 `material` 欠落時は `deficiencies` 非空とします (通常は validate 後のみ build を呼ぶ)。
 
-Mail 例:
+Mail 例 (`material` は **4キーのみ**。From / Reply-To / 認証設定は含めない — [transport_boundary_spec.md](../core/transport_boundary_spec.md)):
 
 ```json
 {

@@ -23,7 +23,7 @@
 
 ## 不足コード — 評価順
 
-`Validate::deficiencies` は、**上から順に** 条件を見て、該当するコードを **append** します。kind 専用行は、記載の `kind` のときだけ評価します。
+`Validate::deficiencies` は、**上から順に** 条件を見て、該当するコードを **append** します。kind 専用行は、記載の `kind` の場合だけ評価します。
 
 `destination_kind_unsupported` の場合は、**以降の kind 専用行 (Mail / SaaS) は評価しません**。
 

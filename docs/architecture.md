@@ -13,6 +13,8 @@
 
 ## レイヤー構成
 
+**Mail Transport** (SMTP、DKIM / SPF / DMARC、受信箱到達) は表の外側 (プラグイン Runner + ホスト) です。Service は [core/transport_boundary_spec.md](./core/transport_boundary_spec.md) のとおり **MailMaterial** までとします。
+
 | 層 | 責務 | 非責務 |
 | --- | --- | --- |
 | Contracts | ペイロード、宛先、Mail 材料、結果レコードの形 | 検証本体 |

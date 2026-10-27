@@ -1,6 +1,6 @@
 # S2J Inquiry Destination Service - Mail アダプタ
 
-初版で実装する **唯一のアダプタ** です。`wp_mail` に渡す直前の材料を返します。
+`kind`: `mail` 用アダプタです。プラグイン Runner が `wp_mail` を呼ぶ **直前** の材料を返します (Transport は [transport_boundary_spec.md](./transport_boundary_spec.md))。
 
 ## 責務
 
@@ -11,7 +11,8 @@
 
 * HTML メール / 添付 (初版は plain 想定。必要なら minor で拡張)。
 * 自動返信メール。
-* From / Reply-To の決定 (プラグインが `wp_mail` 呼び出し時に与える)。
+* From / Reply-To / 添付 / 任意メールヘッダー ([usage_spec.md](../interfaces/usage_spec.md) § Mail Runner)。
+* DKIM / SPF / DMARC、SMTP 接続 (Transport 層)。
 
 ## MailMaterial
 
@@ -23,6 +24,10 @@
 | content_type | string | 初版 `text/plain` 固定 |
 
 `content_type` は MIME タイプ (例: `text/plain`) のみ。`charset=UTF-8` は **プラグイン** が `wp_mail` ヘッダーで付与する ([usage_spec.md](../interfaces/usage_spec.md))。
+
+### 含めないキー (v0.4.0)
+
+`build_dispatch_material` の Mail 分岐は、上記4キー **のみ** を返します。`from` / `reply_to` / `headers` / `attachments` / `smtp_*` / `dkim_*` 等は **追加しません** (一覧と理由: [transport_boundary_spec.md](./transport_boundary_spec.md))。
 
 ## 件名
 

@@ -34,6 +34,11 @@ WordPress も `wp_mail` も SaaS API も使わずに、正規化、検証、Mail
 * 正規化: trim、未知キー除去、`meta` 非配列 coerce
 * `InvalidArgumentException`: validate 失敗状態で build を呼ぶ
 
+## 必須カバレッジ (v0.4— Transport 境界)
+
+* Mail 材料: キーが **`to` / `subject` / `body` / `content_type` の4つのみ** ([transport_boundary_spec.md](./core/transport_boundary_spec.md))
+* 契約スナップショット `mail_sales_body.txt` は **変更しない**
+
 ## 必須カバレッジ (v0.3— SaaS)
 
 [validation_spec.md §評価順](./core/validation_spec.md) の **追記コード (順9–14)** それぞれで真になる入力を1件以上。

@@ -16,6 +16,7 @@ Similarity Service や Webinar Survey Service と同型に、計算だけをパ�
 
 * フォーム HTML、Snow Monkey Forms フック、管理画面 UI。
 * `wp_mail` / HTTP の実行、OAuth、API キーの永続化。
+* **Mail Transport:** SMTP 接続設定、DKIM / SPF / DMARC (**Email Auth**)、受信箱到達の保証 ([core/transport_boundary_spec.md](./core/transport_boundary_spec.md))。
 * 再送キュー、失敗本文の DB キャッシュ。
 * チケットステータス画面、WP 上の案件一覧。
 * 公開日・更新日・ピン留め (別サービス)。
@@ -42,6 +43,10 @@ Similarity Service や Webinar Survey Service と同型に、計算だけをパ�
     * プラグイン。成功条件に含めない。
 * 送信失敗時の入力欄復元:
     * プラグイン。
+* Mail の From / Reply-To / 添付、`wp_mail` 追加ヘッダー:
+    * プラグイン Runner ([interfaces/usage_spec.md](./interfaces/usage_spec.md) §Mail Runner)。
+* メール Transport (SMTP、Email Auth、到達性):
+    * プラグイン + ホスト。Service は **MailMaterial** 4キーまで ([core/transport_boundary_spec.md](./core/transport_boundary_spec.md))。
 
 ## 関連
 

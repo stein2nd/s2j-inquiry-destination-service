@@ -42,16 +42,17 @@ if ($validated['deficiencies'] !== []) {
 $built = build_dispatch_material($validated['payload'], $validated['destination']);
 $material = $built['material'];
 
-// 4. プラグイン: wp_mail (From / Reply-To はプラグイン方針)
-$content_type_header = sprintf(
-    'Content-Type: %s; charset=UTF-8',
-    $material['content_type']
-);
+// 4. プラグイン Runner: wp_mail — §Mail Runner 参照
+$headers = [
+    sprintf('Content-Type: %s; charset=UTF-8', $material['content_type']),
+    sprintf('From: %s', $plugin_from_address),
+    sprintf('Reply-To: %s', $validated['payload']['email']),
+];
 $sent = wp_mail(
     $material['to'],
     $material['subject'],
     $material['body'],
-    [$content_type_header]
+    $headers
 );
 
 // 5. 結果 (ログは PII なしのみ — service_spec)
@@ -68,6 +69,21 @@ if (!$result['success']) {
 // 6. 成功後のみ完了画面 (自動返信は別処理。失敗しても成功扱い)
 ```
 
+## Mail Runner (`wp_mail` 呼び出し契約)
+
+Service は [MailMaterial](../core/mail_adapter_spec.md) の4キーのみ返します。Runner が **追加で付与** する項目の SoT は本節です (Transport 全体: [transport_boundary_spec.md](../core/transport_boundary_spec.md))。
+
+`wp_mail` の第4引数 `$headers` は **文字列のリスト** です。Service は `$headers` を返しません。
+
+| 項目 | 供給元 | 備考 |
+| --- | --- | --- |
+| `$to`, `$subject`, `$message` | `MailMaterial` | `build_dispatch_material` の戻り |
+| `Content-Type` + `charset=UTF-8` | 材料 `content_type` + Runner | 下記チェックリスト |
+| `From` | プラグイン | サイト / ブランド方針。材料に **含めない** |
+| `Reply-To` | プラグイン | 推奨: 送信者 `email` (管理者が返信しやすくする) |
+| 添付 | プラグイン | 初版は通常なし。材料に **含めない** |
+| DKIM / SPF / DMARC | プラグイン + ホスト | [mail_deliverability_spec.md (草案)](https://github.com/stein2nd/s2j-inquiry-destination/blob/main/docs_mod/mail_deliverability_spec.md) |
+
 ## プラグインが持つもの (本ライブラリ外)
 
 * フォーム ID → `inquiry_type` slug (管理画面の種別カタログ)
@@ -83,7 +99,8 @@ if (!$result['success']) {
 * [ ] その種別用の `DestinationRecord` を1件渡した (タイプ別設定の参照はプラグイン内)
 * [ ] `validate_inquiry_dispatch` で deficiencies 非空なら送信せず、入力欄を復元した
 * [ ] 成功前に完了画面 / 受け付け完了メッセージを出さない
-* [ ] `wp_mail` のヘッダーは `material['content_type']` + `charset=UTF-8`
+* [ ] `wp_mail` のヘッダーに `Content-Type: {material.content_type}; charset=UTF-8` を含めた
+* [ ] `From` / `Reply-To` を Runner で付与した (Service 材料外 — § Mail Runner)
 * [ ] `map_dispatch_result` に `correlation_id` を渡し、結果をログに残した (PII なし)
 * [ ] 管理者宛の成功後、自動返信だけが失敗しても、完了画面を取り消さない
 
@@ -163,8 +180,10 @@ $result = map_dispatch_result('saas_backlog', [
 
 ## Composer
 
+S2J Inquiry Destination **v0.2.0** 以降は `^0.4.0` を要求します ([transport_boundary_spec.md §バージョン・依存](../core/transport_boundary_spec.md#バージョン依存))。
+
 ```bash
-composer require s2j/inquiry-destination-service:^0.3.0
+composer require s2j/inquiry-destination-service:^0.4.0
 ```
 
 ## 関連

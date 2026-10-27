@@ -1,6 +1,6 @@
 {
     "name": "s2j-inquiry-destination-service",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "description": "Inquiry SaaS Adapter (WP-Independent)",
     "license": "GPL-3.0-or-later",
     "author": "Koutarou ISHIKAWA <stein2nd@gmail.com>",
@@ -12,22 +12,27 @@
     "bugs": {
         "url": "https://github.com/stein2nd/s2j-inquiry-destination-service/issues"
     },
-    "keywords": [],
-    "workspaces": [],
-    "directories": {},
-    "files": [],
-    "main": "",
+    "keywords": [
+        "composer",
+        "php",
+        "wordpress",
+        "inquiry",
+        "contact-form",
+        "mail",
+        "saas",
+        "s2j"
+    ],
     "scripts": {
         "lint:docs": "s2j-docs-linter ./README.md ./CHANGELOG.md ./docs/**/*.md ./docs_mod/**/*.md",
         "lint:php": "composer lint:php",
         "phpstan": "composer phpstan",
         "phpcs": "composer phpcs",
-        "pretest:unit:php:local": "composer install --no-interaction --prefer-dist",
         "test:unit:php:local": "composer test",
-        "pretest:lint:php": "composer install --no-interaction --prefer-dist",
         "validate:composer": "composer validate-composer",
         "verify:dist": "composer verify-dist",
-        "quality:php": "bash scripts/verify/all.sh"
+        "quality:php": "bash scripts/verify/all.sh",
+        "pretest:unit:php:local": "composer install --no-interaction --prefer-dist",
+        "pretest:lint:php": "composer install --no-interaction --prefer-dist"
     },
     "devDependencies": {
         "@s2j/docs-linter": "^1.0.30"

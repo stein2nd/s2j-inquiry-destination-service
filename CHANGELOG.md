@@ -2,9 +2,18 @@
 
 ## unreleased
 
+## 0.4.0 - 2026-10-27
+
 ### Changed
 
-* **`docs/status.md`**: v0.3.0リリース・ Packagist `0.3.0`・非 HTTPS 完了条件 (Impl / CI 証跡・チェック件数) を反映
+* **Transport 境界 (Mail)**: Service は `MailMaterial` 4キーのみ。SMTP / DKIM / From はプラグイン Runner — [transport_boundary_spec.md](./docs/core/transport_boundary_spec.md)、[usage_spec.md § Mail Runner](./docs/interfaces/usage_spec.md)
+* **`docs/`**: `overview` / `principles` / `service_spec` / `mail_adapter_spec` / contracts 索引を v0.4に同期
+* **README**: `composer require ^0.4.0`、Transport 非目標へのリンク
+* **`docs/status.md`**: v0.3.0リリース、Packagist `0.3.0`、非 HTTPS 完了条件 (Impl / CI 証跡・チェック件数) を反映
+
+### Added
+
+* **PHPUnit**: Mail 材料キーが4つのみであることを `testBuildDispatchMaterialProducesMailMaterial` で固定 (v0.4契約)
 
 ### Fixed
 

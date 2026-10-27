@@ -11,8 +11,10 @@
 PHP **8.3以上** が必要です ([WordPress 必須要件](https://ja.wordpress.org/about/requirements/) に準拠)。
 
 ```bash
-composer require s2j/inquiry-destination-service:^0.3.0
+composer require s2j/inquiry-destination-service:^0.4.0
 ```
+
+Mail の Transport (SMTP / Email Auth) は本ライブラリ外です ([docs/core/transport_boundary_spec.md](./docs/core/transport_boundary_spec.md))。
 
 Packagist 未公開の間は VCS またはパス repository を利用します。
 

@@ -6,6 +6,7 @@ namespace S2J\InquiryDestinationService\Core\Adapters;
 
 use S2J\InquiryDestinationService\Core\Validate;
 
+/** Mail `kind` 材料 — 4キーのみ (Transport / From 等は含めない。docs/core/transport_boundary_spec.md)。 */
 final class Mail
 {
     /**

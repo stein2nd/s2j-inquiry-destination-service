@@ -55,6 +55,7 @@
 | [検証](./core/validation_spec.md) | 不足コードと送信可否 |
 | [送信ポート](./core/dispatch_spec.md) | 種類 (`mail` 等) からアダプタ関数を選ぶ |
 | [Mail アダプタ](./core/mail_adapter_spec.md) | 管理者宛メール文面の組立 |
+| [Transport 境界 (Mail)](./core/transport_boundary_spec.md) | Service と SMTP / Email Auth の責務分界 (v0.4) |
 | [Backlog SaaS アダプタ](./core/saas_backlog_adapter_spec.md) | Backlog 課題追加 HTTP 材料 |
 | [Asana SaaS アダプタ](./core/saas_asana_adapter_spec.md) | Asana タスク作成 HTTP 材料 |
 | [結果レコード](./core/result_spec.md) | 成功・失敗と個人情報の境界 |
@@ -128,6 +129,7 @@ flowchart TD
 | 対象 | 正本 |
 | --- | --- |
 | ペイロード・宛先・検証・文面組立の規則 | [core/](./core/payload_spec.md) |
+| Mail Transport 境界 (From / DKIM 等の非包含) | [core/transport_boundary_spec.md](./core/transport_boundary_spec.md) |
 | 入出力の型とフィールド | [contracts/data_contract_spec.md](./contracts/data_contract_spec.md) |
 | 用語の意味 | [contracts/data_dictionary.md](./contracts/data_dictionary.md) |
 | 公開 PHP API | [interfaces/php_api_spec.md](./interfaces/php_api_spec.md) |
