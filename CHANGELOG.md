@@ -2,6 +2,13 @@
 
 ## unreleased
 
+## 0.4.1 - 2026-10-29
+
+### Changed
+
+* **`docs/status.md`**: Packagist [v0.4.0](https://packagist.org/packages/s2j/inquiry-destination-service#v0.4.0) 反映を確認し、非 HTTPS、Packagist 完了条件を **7/7** に更新
+* **dev**: `composer.lock` — `phpstan/phpstan` 2.3.4、`@s2j/docs-linter` ^1.0.31
+
 ## 0.4.0 - 2026-10-27
 
 ### Changed

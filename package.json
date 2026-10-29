@@ -1,6 +1,6 @@
 {
     "name": "s2j-inquiry-destination-service",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "description": "Inquiry SaaS Adapter (WP-Independent)",
     "license": "GPL-3.0-or-later",
     "author": "Koutarou ISHIKAWA <stein2nd@gmail.com>",
@@ -35,7 +35,7 @@
         "pretest:lint:php": "composer install --no-interaction --prefer-dist"
     },
     "devDependencies": {
-        "@s2j/docs-linter": "^1.0.30"
+        "@s2j/docs-linter": "^1.0.31"
     },
     "allowScripts": {
         "@s2j/docs-linter": true,
