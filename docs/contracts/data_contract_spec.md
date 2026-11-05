@@ -139,7 +139,7 @@ Asana 成功例:
 }
 ```
 
-写像: [result_spec.md](../core/result_spec.md)。
+マッピング: [result_spec.md](../core/result_spec.md)。
 
 ## 出力: ResultRecord
 

@@ -124,12 +124,12 @@ API キーはライブラリに埋め込みません。プラグインが実行�
 
 ## Transport 境界 (Mail)
 
-Service Core の契約は **材料 (`MailMaterial`) と結果写像** までとします。`wp_mail` 実行、From / Reply-To、Email Auth、SMTP は **プラグイン Runner + ホスト** です。
+Service Core の契約は **材料 (`MailMaterial`) と結果マッピング** までとします。`wp_mail` 実行、From / Reply-To、Email Auth、SMTP は **プラグイン Runner + ホスト** です。
 
 | 層 | 参照 |
 | --- | --- |
 | 規則 SoT | [core/transport_boundary_spec.md](./core/transport_boundary_spec.md) |
-| 呼び出し | [interfaces/usage_spec.md](./interfaces/usage_spec.md) §Mail Runner |
+| 呼び出し | [interfaces/usage_spec.md](./interfaces/usage_spec.md) § Mail Runner |
 | プラグイン配信 | [mail_deliverability_spec.md (草案)](https://github.com/stein2nd/s2j-inquiry-destination/blob/main/docs_mod/mail_deliverability_spec.md) |
 
 レイヤ図: [transport_boundary_spec.md §レイヤ](./core/transport_boundary_spec.md) (mermaid)。

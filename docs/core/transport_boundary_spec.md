@@ -4,7 +4,7 @@
 
 ## 目的
 
-Mail 送信について、**Service Core が保証する契約** (正規化 → 検証 → **MailMaterial** → 結果写像) と、**Transport 層** (SMTP、`wp_mail` / PHPMailer、DKIM / SPF / DMARC、到達性) の責務分界を、semver **0.4.0** で文書上固定します。
+Mail 送信について、**Service Core が保証する契約** (正規化 → 検証 → **MailMaterial** → 結果マッピング) と、**Transport 層** (SMTP、`wp_mail` / PHPMailer、DKIM / SPF / DMARC、到達性) の責務分界を、semver **0.4.0** で文書上固定します。
 
 **公開 PHP API (4関数) のシグネチャと、`MailMaterial` / `HttpRequestMaterial` の判別は、v0.3系リリースと互換のまま変更しません。**
 
@@ -59,7 +59,7 @@ flowchart LR
 | DKIM / SPF / DMARC | **含めない・非目標** | 設定 UI / フックはプラグイン側仕様 | MTA / プラグイン |
 | SMTP ホスト / ポート / 認証 | **非目標** | `wp_mail` / PHPMailer 設定は WP 定数・プラグイン | レンタルサーバー |
 | 受信箱到達の確認 | **不可** (成功 = `wp_mail` bool) | ステージングで人手確認可 | 配信ログ |
-| `map_dispatch_result('mail', bool)` | 写像 | bool を渡す | — |
+| `map_dispatch_result('mail', bool)` | マッピング | bool を渡す | — |
 
 ## MailMaterial 契約 (Transport 除外)
 

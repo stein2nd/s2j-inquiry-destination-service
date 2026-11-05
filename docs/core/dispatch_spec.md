@@ -50,7 +50,7 @@ Similarity Service の Strategy は **処理全体を1つ差し替え** ます�
 | `mail` | `bool` (`wp_mail` の戻り) |
 | `saas_backlog` / `saas_asana` | `SaasExecutionOutcome` ([php_api_spec.md](../interfaces/php_api_spec.md)) |
 
-写像規則: [result_spec.md](./result_spec.md)。製品別フィールド: [saas_backlog_adapter_spec.md](./saas_backlog_adapter_spec.md) / [saas_asana_adapter_spec.md](./saas_asana_adapter_spec.md)。
+マッピング規則: [result_spec.md](./result_spec.md)。製品別フィールド: [saas_backlog_adapter_spec.md](./saas_backlog_adapter_spec.md) / [saas_asana_adapter_spec.md](./saas_asana_adapter_spec.md)。
 
 ## 関連
 

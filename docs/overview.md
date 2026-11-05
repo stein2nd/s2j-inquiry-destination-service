@@ -29,7 +29,7 @@ Similarity Service や Webinar Survey Service と同型に、計算だけをパ�
 | 検証 | 必須フィールド、宛先未設定などを、**不足コード** で返す |
 | 送信ポート | 宛先レコードの `kind` (`mail` 等) から、アダプタ関数を選ぶ |
 | アダプタ | Mail 文面、Backlog / Asana 向け HttpRequestMaterial (材料のみ) |
-| 結果写像 | 実行結果 (Mail は bool、SaaS は `http_status` + パース済み JSON) を **個人情報を含まない** 結果レコードに写す |
+| 結果マッピング | 実行結果 (Mail は bool、SaaS は `http_status` + パース済み JSON) を **個人情報を含まない** 結果レコードに写す |
 
 ## 非責務
 
@@ -44,7 +44,7 @@ Similarity Service や Webinar Survey Service と同型に、計算だけをパ�
 * 送信失敗時の入力欄復元:
     * プラグイン。
 * Mail の From / Reply-To / 添付、`wp_mail` 追加ヘッダー:
-    * プラグイン Runner ([interfaces/usage_spec.md](./interfaces/usage_spec.md) §Mail Runner)。
+    * プラグイン Runner ([interfaces/usage_spec.md](./interfaces/usage_spec.md) § Mail Runner)。
 * メール Transport (SMTP、Email Auth、到達性):
     * プラグイン + ホスト。Service は **MailMaterial** 4キーまで ([core/transport_boundary_spec.md](./core/transport_boundary_spec.md))。
 

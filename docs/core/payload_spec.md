@@ -9,7 +9,7 @@
 
 ## 非責務
 
-* SMF のフィールド名 → ペイロードキーへの写像 (プラグイン)。
+* SMF のフィールド名 → ペイロードキーへのマッピング (プラグイン)。
 * フォーム ID → `inquiry_type` の解決 (プラグイン)。
 * 種別カタログ (増減・表示名・`mail_to`) — **プラグイン** ([../contracts/data_dictionary.md](../contracts/data_dictionary.md))。
 

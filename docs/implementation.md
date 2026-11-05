@@ -10,7 +10,7 @@
 | 2 | ペイロード正規化 | [core/payload_spec.md](./core/payload_spec.md) | `Core/Payload.php` |
 | 3 | 検証 + 不足コード | [core/validation_spec.md](./core/validation_spec.md) | `Core/Validate.php` |
 | 4 | dispatch + Mail 材料 | [dispatch_spec.md](./core/dispatch_spec.md), [mail_adapter_spec.md](./core/mail_adapter_spec.md) | `Core/Dispatch.php`, `Core/Adapters/Mail.php` |
-| 5 | 結果写像 | [core/result_spec.md](./core/result_spec.md) | `Core/Result.php` |
+| 5 | 結果マッピング | [core/result_spec.md](./core/result_spec.md) | `Core/Result.php` |
 | 6 | PHPUnit 必須分岐 | [testing_spec.md](./testing_spec.md) | `tests/Unit/*`, `tests/Fixtures/*` |
 | 7 | PHPStan / PHPCS / CI | [engineering/ci.md](./engineering/ci.md) | `.github/workflows/*` |
 
@@ -20,7 +20,7 @@ S2J Inquiry Destination が `composer require` し、Snow Monkey Forms + `wp_mai
 
 ## フェーズ4: Transport 境界 (Mail) — v0.4.0
 
-公開 API・`MailMaterial` 形状は v0.3 互換。実装は **4キー固定** のまま ([transport_boundary_spec.md](./core/transport_boundary_spec.md))。
+公開 API ・`MailMaterial` 形状は v0.3互換。実装は **4キー固定** のまま ([transport_boundary_spec.md](./core/transport_boundary_spec.md))。
 
 | # | タスク | 仕様 / ファイル |
 | --- | --- | --- |
@@ -39,7 +39,7 @@ S2J Inquiry Destination が `composer require` し、Snow Monkey Forms + `wp_mai
 | 3 | Backlog / Asana アダプタ | `Core/Adapters/SaasBacklog.php`, `SaasAsana.php` |
 | 4 | HttpRequestMaterial を契約に追記 | [contracts/data_contract_spec.md](./contracts/data_contract_spec.md) |
 | 5 | 不足 / failure コードを必要なら minor 追加 | [validation_spec.md](./core/validation_spec.md), [data_dictionary.md](./contracts/data_dictionary.md) |
-| 6 | PHPUnit 代表入力 + 写像 | [testing_spec.md](./testing_spec.md) |
+| 6 | PHPUnit 代表入力 + マッピング | [testing_spec.md](./testing_spec.md) |
 | 7 | プラグイン: HTTP 実行、credentials 渡し、ログ (PII なし) | 別 repo [usage_spec.md](./interfaces/usage_spec.md) |
 
 ## 受け入れ (フェーズ1完了)

@@ -15,7 +15,7 @@
 
 ## 機能一覧
 
-**完了条件列:** 100% 到達用チェックリスト (1行 = PHPUnit ケース1件、CI 1ステップ、または手動確認1件)。`[x]` = 満たし済み、`[ ]` = 未。正本 spec は各§の見出しリンク。
+**完了条件列:** 100% 到達用チェックリスト (1行 = PHPUnit ケース1件、CI1ステップ、または手動確認1件)。`[x]` = 満たし済み、`[ ]` = 未。正本 spec は各§の見出しリンク。
 
 | 機能名 | 実装済み/未実装 | 実装％ | 完了条件 (100%) |
 | --- | --- | --- | --- |
@@ -25,7 +25,7 @@
 | 検証 (不足コード一式) | 実装済み | 100 | [§ 検証 Mail](#status-validate) (11/11) + [§ 検証 SaaS](#status-validate-saas) (10/10) |
 | Mail アダプタ + Transport 境界 (v0.4) | 実装済み | 100 | [§ Mail](#status-mail) (6/6) + [§ Transport](#status-transport) (2/2) |
 | SaaS アダプタ (Backlog / Asana) | 実装済み | 100 | [§ SaaS 材料](#status-saas-material) (3/3) |
-| 結果写像 | 実装済み | 100 | [§ 結果 Mail](#status-result) (4/4) + [§ 結果 SaaS](#status-result-saas) (7/7) |
+| 結果マッピング | 実装済み | 100 | [§ 結果 Mail](#status-result) (4/4) + [§ 結果 SaaS](#status-result-saas) (7/7) |
 | PHPUnit / PHPStan / PHPCS | 実装済み | 100 | [§ 品質ゲート](#status-quality) (8/8) |
 | Packagist 公開 | 実装済み | 100 | [§ Packagist (手動)](#status-packagist-manual) (7/7) |
 | プラグインからの require | 未 | 0 | [§ プラグイン (HTTPS・手動)](#status-plugin-manual) (0/8) |
@@ -34,7 +34,7 @@
 
 ### 非 HTTPS 環境でテスト可能なこと
 
-ローカルまたは CI 上で、WordPress 本番相当 URL・実 SMTP・ステージング HTTPS なしに完結する項です。正本: [testing_spec.md](./testing_spec.md)、[ci.md](./engineering/ci.md)。
+ローカルまたは CI 上で、WordPress 本番相当 URL ・実 SMTP ・ステージング HTTPS なしに完結する項です。正本: [testing_spec.md](./testing_spec.md)、[ci.md](./engineering/ci.md)。
 
 一括実行 (自動): `npm run quality:php` (= `scripts/verify/all.sh` と同順)。ドキュメント: `npm run lint:docs`。
 
@@ -113,7 +113,7 @@
 * [x] Test: `testBuildDispatchMaterialProducesMailMaterial` — 件名 `[{inquiry_type}] {subject_hint}`
 * [x] Test: `testBuildUsesSubjectFallbackWhenSubjectHintEmpty` / `testRecruitHappyPathValidateAndBuild` — `subject_hint` 空時 slug フォールバック
 * [x] Test: `ContractSnapshotTest::testMailSalesBodyMatchesContractFixture` — [tests/Fixtures/contracts/mail_sales_body.txt](../tests/Fixtures/contracts/mail_sales_body.txt)
-* [x] Test: `testBuildDispatchMaterialProducesMailMaterial` — Mail 材料キー4つのみ (v0.4 — [transport_boundary_spec.md](./core/transport_boundary_spec.md))
+* [x] Test: `testBuildDispatchMaterialProducesMailMaterial` — Mail 材料キー4つのみ (v0.4— [transport_boundary_spec.md](./core/transport_boundary_spec.md))
 
 ##### Transport 境界 (Mail v0.4) {#status-transport}
 
@@ -130,7 +130,7 @@
 * [x] Test: `testAsanaBuildMaterialJsonDataWrapper` — JSON `data` + `projects` 1件
 * [x] Test: `testBacklogBuildMaterialMatchesMailPlainText` — `projectId` / `issueTypeId` / `priorityId` / `summary` / `description`
 
-##### 結果写像 (Mail) {#status-result}
+##### 結果マッピング (Mail) {#status-result}
 
 正本: [result_spec.md](./core/result_spec.md)
 
@@ -139,9 +139,9 @@
 * [x] Test: `testMapDispatchResultForMail` — `context['correlation_id']` エコー
 * [x] Test: `testMapDispatchResultForMail` — Mail 成功時 `external_ticket_id` 空文字、`http_status` `null`
 
-##### 結果写像 (SaaS v0.3) {#status-result-saas}
+##### 結果マッピング (SaaS v0.3) {#status-result-saas}
 
-正本: [result_spec.md §SaaS 写像](./core/result_spec.md)
+正本: [result_spec.md §SaaS マッピング](./core/result_spec.md)
 
 * [x] Test: `testMapBacklogSuccessNumericId` — `201` + `id` → `external_ticket_id === '1'`
 * [x] Test: `testMapBacklogHttpErrors` — `400` / `0` → `saas_http_error`
@@ -173,7 +173,7 @@
 * [x] Packagist: [s2j/inquiry-destination-service](https://packagist.org/packages/s2j/inquiry-destination-service) 登録済み
 * [x] Packagist: auto-update — `This package is auto-updated.` を確認 (2026-10-20)
 * [x] SemVer: CHANGELOG + タグ `v0.1.0` / `v0.2.0` / `v0.3.0` ([Packagist](https://packagist.org/packages/s2j/inquiry-destination-service))
-* [x] SemVer: CHANGELOG `0.4.0` 節 + タグ `v0.4.0` + GitHub Release + [Packagist v0.4.0](https://packagist.org/packages/s2j/inquiry-destination-service#v0.4.0) (2026-10-27 確認)
+* [x] SemVer: CHANGELOG `0.4.0` 節 + タグ `v0.4.0` + GitHub Release + [Packagist v0.4.0](https://packagist.org/packages/s2j/inquiry-destination-service#v0.4.0) (2026-10-27確認)
 * [x] README — `composer require ^0.4.0` / PHP v8.3以上 ([README.md](../README.md))
 * [x] `composer.json` — `require.php` `^8.3`、`autoload.files` → `src/functions.php`
 * [x] Impl: `DestinationKinds` — `mail` / `saas_backlog` / `saas_asana`；`Core/Adapters/Mail` 等 ([implementation.md](./implementation.md))
@@ -204,7 +204,7 @@
 * [ ] ステージング (HTTPS): Mail Runner — `wp_mail` ヘッダー ([usage_spec.md](./interfaces/usage_spec.md))
 * [ ] ステージング (HTTPS): `map_dispatch_result` + ログ (`correlation_id` / `failure_code`、PII なし)
 * [ ] ステージング (HTTPS): 管理者 Mail 成功後、自動返信のみ失敗しても完了画面を取り消さない
-* [ ] ステージング (HTTPS): 受信箱到達確認 (Transport — `wp_mail` true でも未到達があり得る)
+* [ ] ステージング (HTTPS): 受信箱への到達確認 (Transport — `wp_mail` true でも未到達があり得る)
 
 ##### 外部結合 (SaaS / Transport) {#status-external-manual}
 
@@ -214,8 +214,8 @@
 
 ## 補足
 
-* 本ライブラリは **`wp_mail` を呼ばない**。Mail 成功はプラグインが渡す **bool** を `map_dispatch_result` が写像するだけ ([testing_spec.md](./testing_spec.md))。
-* **Transport 境界 (v0.4):** Service は **MailMaterial 4キー** まで。SMTP / From / Email Auth はプラグイン Runner ([transport_boundary_spec.md](./core/transport_boundary_spec.md))。
+* 本ライブラリは **`wp_mail` を呼ばない**。Mail 成功はプラグインが渡す **bool** を `map_dispatch_result` がマッピングするだけ ([testing_spec.md](./testing_spec.md))。
+* **Transport 境界 (v0.4):** Service は **MailMaterial4キー** まで。SMTP / From / Email Auth はプラグイン Runner ([transport_boundary_spec.md](./core/transport_boundary_spec.md))。
 * **実装％** は、各§チェックリストの `[x]` / 全項 (仕様分割は除く)。
 * **非 HTTPS** § (自動 + 手動) の Packagist / CI / Unit は **100%** (2026-10-27)。**HTTPS** §はフェーズ2 (別 repo) + 運用 ([implementation.md §フェーズ1](./implementation.md#フェーズ1-本-repo-wp-なし) / [§フェーズ4](./implementation.md#フェーズ4-transport-境界-mail--v040))。
 * ローカル品質ゲート: `npm run quality:php` (validate → dist → PHPUnit → PHPStan → PHPCS)。

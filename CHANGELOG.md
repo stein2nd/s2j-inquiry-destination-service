@@ -2,6 +2,14 @@
 
 ## unreleased
 
+## 0.4.2 - 2026-11-05
+
+### Changed
+
+* **`docs/`**: 結果処理の用語を **マッピング** に統一 (従来の「写像」表記を整理)。`result_spec` / `status.md` / adapter 仕様、`transport_boundary_spec` 等
+* **CHANGELOG**: 0.1.0〜0.3.0節の「写像」表記をマッピングにそろえ
+* **dev**: `@s2j/docs-linter` ^1.0.32、`composer.lock` 更新 (公開 API、`src/` 変更なし)
+
 ## 0.4.1 - 2026-10-29
 
 ### Changed
@@ -32,7 +40,7 @@
 
 * **SaaS `kind`**: `saas_backlog` (Backlog 課題 form) / `saas_asana` (Asana JSON `data` ラッパー) — `Core/Adapters/SaasBacklog.php`, `SaasAsana.php`
 * **検証**: 不足コード6件 (`destination_saas_*`, `destination_credentials_*`)。`destination_kind_unsupported` 時は kind 専用行を評価しない
-* **写像**: `map_dispatch_result` — `SaasExecutionOutcome`、成功は HTTP **201** + ticket id、`saas_http_error` / `saas_body_invalid`
+* **マッピング**: `map_dispatch_result` — `SaasExecutionOutcome`、成功は HTTP **201** + ticket id、`saas_http_error` / `saas_body_invalid`
 * **`Core/Adapters/InquiryContent`**: Mail / SaaS 共通の件名・プレーン本文 (`Mail` を共有化)
 * **PHPUnit**: `SaasInquiryDestinationServiceTest` — [testing_spec.md](./docs/testing_spec.md) v0.3分岐 (計 **39** tests)
 
@@ -40,7 +48,7 @@
 
 * **PHP 要件**: `^8.3` ([WordPress 必須要件](https://ja.wordpress.org/about/requirements/) 準拠)。`build_and_release.md`、README、`.github/workflows/php-quality.yml` を同期
 * **`docs/`**: v0.3 (SaaS) 仕様確定 (Backlog / Asana adapter 新規、dispatch / validation / contracts / usage 更新)
-* **`docs/status.md`**: 非 HTTPS 完了条件に SaaS 検証・材料・写像を反映
+* **`docs/status.md`**: 非 HTTPS 完了条件に SaaS 検証・材料・マッピングを反映
 * **`build_dispatch_material`**: `material` 型を `array<string, mixed>` (Mail / HttpRequestMaterial 判別)
 * **`docs_mod/`**: 反映後は [README.md](./docs_mod/README.md) のみ残す (次回起草用)
 
@@ -65,7 +73,7 @@
 ### Added
 
 * 初版 Core と公開4関数 (`normalize_inquiry_payload`、`validate_inquiry_dispatch`、`build_dispatch_material`、`map_dispatch_result`)
-* Mail アダプタ (件名、本文、`text/plain` 材料) と結果写像 (`mail_rejected`、`correlation_id` エコー)
+* Mail アダプタ (件名、本文、`text/plain` 材料) と結果マッピング (`mail_rejected`、`correlation_id` エコー)
 * PHPUnit 必須分岐 + 契約スナップショット (`tests/Unit/`、`tests/Fixtures/contracts/mail_sales_body.txt`)
 * GitHub Actions `php-quality` と `scripts/verify/all.sh` (validate / dist / PHPUnit / PHPStan / PHPCS)
 * `composer validate-composer` / `composer verify-dist` (`scripts/verify-composer-dist.sh`)

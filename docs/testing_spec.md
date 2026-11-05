@@ -2,7 +2,7 @@
 
 ## 設計意図 (ゴール)
 
-WordPress も `wp_mail` も SaaS API も使わずに、正規化、検証、Mail 材料、結果写像の全分岐を固定します。
+WordPress も `wp_mail` も SaaS API も使わずに、正規化、検証、Mail 材料、結果マッピングの全分岐を固定します。
 
 ## 責務
 

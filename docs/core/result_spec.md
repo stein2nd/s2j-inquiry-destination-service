@@ -57,7 +57,7 @@
 * `$execution_outcome` が **array でない**、または `http_status` / `parsed_body` キー欠落 → `InvalidArgumentException` (プログラマー誤り)。
 * `parsed_body` は **array** (プラグインが decode 失敗時 `[]` を渡す)。
 
-### SaaS — 写像アルゴリズム (実装の正)
+### SaaS — マッピングアルゴリズム (実装の正)
 
 `ticket_id` は kind ごとに次の **非空 string** を取り出せた場合だけセット (数値 `id` は `(string)` 化):
 

@@ -5,7 +5,7 @@
 ## 責務
 
 * 統一ペイロード + 宛先から、Backlog **課題追加** `POST /api/v2/issues` 向け [HttpRequestMaterial](../contracts/data_contract_spec.md) を組む。
-* 成功時の `id` フィールド意味を [result_spec.md](./result_spec.md) に委譲する (写像ロジックの正本は result_spec)。
+* 成功時の `id` フィールド意味を [result_spec.md](./result_spec.md) に委譲する (マッピングロジックの正本は result_spec)。
 
 ## 非責務
 
@@ -53,9 +53,9 @@ OAuth2.0は、v0.3対象外とします。
 * `headers`: `Backlog-API-Key`, `Content-Type: application/x-www-form-urlencoded`
 * `body`: PHP `http_build_query` 相当の1本 string
 
-## 写像
+## マッピング
 
-[result_spec.md §SaaS 写像アルゴリズム](./result_spec.md) — チケット ID は JSON トップレベル `id`。
+[result_spec.md §SaaS マッピングアルゴリズム](./result_spec.md) — チケット ID は JSON トップレベル `id`。
 
 ## 関連
 

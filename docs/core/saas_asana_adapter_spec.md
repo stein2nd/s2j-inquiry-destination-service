@@ -56,9 +56,9 @@ Backlog と同じく [Mail.php](../../src/Core/Adapters/Mail.php) の件名・�
 
 (`projects` は JSON 配列。PHP 実装では `json_encode` で `data` オブジェクトごと渡す)
 
-## 写像
+## マッピング
 
-[result_spec.md §SaaS 写像アルゴリズム](./result_spec.md) — gid は `parsed_body['data']['gid']`。
+[result_spec.md §SaaS マッピングアルゴリズム](./result_spec.md) — gid は `parsed_body['data']['gid']`。
 
 ## 関連
 

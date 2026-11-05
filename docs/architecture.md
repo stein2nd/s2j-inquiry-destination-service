@@ -18,7 +18,7 @@
 | 層 | 責務 | 非責務 |
 | --- | --- | --- |
 | Contracts | ペイロード、宛先、Mail 材料、結果レコードの形 | 検証本体 |
-| Core | 正規化、検証、dispatch 選択、Mail 文面組立、結果写像 | I/O |
+| Core | 正規化、検証、dispatch 選択、Mail 文面組立、結果マッピング | I/O |
 | Interfaces | 公開関数の入口 | ドメイン規則の重複 |
 
 ```mermaid
@@ -54,7 +54,7 @@ s2j-inquiry-destination-service/
 │   │   ├── Payload.php      # 正規化
 │   │   ├── Validate.php     # 不足コード
 │   │   ├── Dispatch.php     # kind → アダプタ
-│   │   ├── Result.php       # 結果写像
+│   │   ├── Result.php       # 結果マッピング
 │   │   └── Adapters/
 │   │       ├── Mail.php
 │   │       ├── SaasBacklog.php

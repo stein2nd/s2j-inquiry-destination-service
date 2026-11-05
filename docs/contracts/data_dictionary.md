@@ -67,7 +67,7 @@ v0.3追記:
 | --- | --- |
 | 生成 | プラグイン (1送信試行ごと) |
 | 用途 | 失敗追跡。ログと結果レコードの突合 (PII ではない) |
-| 結果レコード | 任意。`map_dispatch_result` の `context['correlation_id']` を写像時に **エコー推奨** ([result_spec.md](../core/result_spec.md)) |
+| 結果レコード | 任意。`map_dispatch_result` の `context['correlation_id']` をマッピング時に **エコー推奨** ([result_spec.md](../core/result_spec.md)) |
 
 ## 用語
 
