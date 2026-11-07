@@ -1,6 +1,6 @@
 {
     "name": "s2j-inquiry-destination-service",
-    "version": "0.4.2",
+    "version": "0.4.3",
     "description": "Inquiry SaaS Adapter (WP-Independent)",
     "license": "GPL-3.0-or-later",
     "author": "Koutarou ISHIKAWA <stein2nd@gmail.com>",

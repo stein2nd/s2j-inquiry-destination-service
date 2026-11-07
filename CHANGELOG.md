@@ -2,6 +2,12 @@
 
 ## unreleased
 
+## 0.4.3 - 2026-11-07
+
+### Changed
+
+* **CI**: `docs-lint` / `php-quality` — runner を `ubuntu-24.04` に固定、`actions/checkout@v5`。`docs-lint` は `actions/setup-node@v5` + Node **24** (Actions の Node v20非推奨 annotation 解消)
+
 ## 0.4.2 - 2026-11-05
 
 ### Changed
