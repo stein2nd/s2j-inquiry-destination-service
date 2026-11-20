@@ -6,7 +6,7 @@
 
 ### Fixed
 
-* **dev / CI**: `phpunit/phpunit` を ^10.5に戻し `composer.lock` を PHP **^8.3** (Actions) と整合 (^13.4 は PHP 8.4+ 必須のため `php-quality` の `composer install` が失敗していた)
+* **dev / CI**: `phpunit/phpunit` を ^10.5に戻し `composer.lock` を PHP **^8.3** (Actions) と整合 (^13.4は PHP 8.4+ 必須のため `php-quality` の `composer install` が失敗していた)
 
 ## 0.4.4 - 2026-11-20
 
