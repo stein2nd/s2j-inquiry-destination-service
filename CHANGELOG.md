@@ -2,6 +2,13 @@
 
 ## unreleased
 
+## 0.4.4 - 2026-11-20
+
+### Changed
+
+* **dev**: `phpunit/phpunit` ^13.4、`composer.lock` 更新
+* **dev**: `@s2j/docs-linter` ^1.0.34、`package-lock.json` 更新 (公開 API、`src/` 変更なし)
+
 ## 0.4.3 - 2026-11-07
 
 ### Changed
